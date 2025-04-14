@@ -21,5 +21,5 @@ public class Hotel extends AbstractEntity {
     private int stars;
     @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne
-    private User user;
+    private User owner;
 }

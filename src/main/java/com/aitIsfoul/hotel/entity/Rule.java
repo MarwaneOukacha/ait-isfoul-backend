@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@AttributeOverride(name = "id", column = @Column(name = "rules_id"))
+@AttributeOverride(name = "id", column = @Column(name = "rule_id"))
 public class Rule extends AbstractEntity {
     private String name;
     @ManyToOne

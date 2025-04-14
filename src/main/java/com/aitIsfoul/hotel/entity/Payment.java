@@ -18,7 +18,7 @@ public class Payment extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "booking_id", nullable = false)
-    private Booking booking; // Links payment to an order
+    private Booking booking; // Links payment to an booking
 
     @Column(name = "payment_amount", nullable = false, precision = 12, scale = 2)
     private BigDecimal paymentAmount;

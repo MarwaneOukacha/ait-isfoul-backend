@@ -11,13 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @AttributeOverride(name = "id", column = @Column(name = "room_image_id"))
-public class RoomImages extends AbstractEntity {
+public class RoomImage extends AbstractEntity {
     private String name;
     private String type;
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] data;
+    @ManyToOne
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 }
