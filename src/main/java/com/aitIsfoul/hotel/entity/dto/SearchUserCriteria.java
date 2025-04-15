@@ -1,11 +1,11 @@
 package com.aitIsfoul.hotel.entity.dto;
 import com.aitIsfoul.hotel.enums.UserStatus;
 import com.aitIsfoul.hotel.enums.UserType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchUserCriteria {

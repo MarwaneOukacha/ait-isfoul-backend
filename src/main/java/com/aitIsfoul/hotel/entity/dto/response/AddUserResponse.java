@@ -4,10 +4,12 @@ import com.aitIsfoul.hotel.enums.UserType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 @Data
 public class AddUserResponse {
+    private UUID id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -15,4 +17,5 @@ public class AddUserResponse {
     private UserType type;
     private LocalDateTime created;
     private UserStatus status;
+    private String iden;
 }

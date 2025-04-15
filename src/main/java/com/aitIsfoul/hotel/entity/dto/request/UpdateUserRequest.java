@@ -4,6 +4,8 @@ import com.aitIsfoul.hotel.enums.UserStatus;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class UpdateUserRequest {
     private String id;

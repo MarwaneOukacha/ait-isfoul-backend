@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @AttributeOverride(name = "id", column = @Column(name = "client_id"))
 public class Client extends AbstractUser {
 

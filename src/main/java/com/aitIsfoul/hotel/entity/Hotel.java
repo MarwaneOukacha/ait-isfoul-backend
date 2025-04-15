@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,4 +24,6 @@ public class Hotel extends AbstractEntity {
     @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne
     private User owner;
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoomImage> images;
 }

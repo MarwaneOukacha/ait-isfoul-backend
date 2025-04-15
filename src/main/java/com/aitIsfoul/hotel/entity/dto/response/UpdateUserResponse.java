@@ -1,6 +1,5 @@
 package com.aitIsfoul.hotel.entity.dto.response;
 import com.aitIsfoul.hotel.enums.UserStatus;
-import jakarta.validation.constraints.Email;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,5 +13,6 @@ public class UpdateUserResponse {
     private LocalDateTime created;
     private LocalDateTime updated;
     private String isActive;
+    private String iden;
     private UserStatus status;
 }

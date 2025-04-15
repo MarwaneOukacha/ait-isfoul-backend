@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: aitisfoul
+  datasource:
+    url: jdbc:postgresql://localhost:5432/aitisfoul
+    username: postgres
+    password: Xyna2604
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  datasource.hikari.maximum-pool-size: 10
+logging:
+  level:
+    root: INFO
+    com.saas.drg: DEBUG
+    org.springframework: INFO
+server:
+  port: 8088
