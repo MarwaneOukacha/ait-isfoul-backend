@@ -5,6 +5,8 @@ import com.aitIsfoul.hotel.entity.User;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class UpdateHotelResponseDTO {
@@ -13,4 +15,5 @@ public class UpdateHotelResponseDTO {
     private LocationDTO location;
     private int stars;
     private User owner;
+    private LocalDateTime updated;
 }

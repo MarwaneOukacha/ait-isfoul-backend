@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateHotelRequestDTO {
     @NotNull(message = "Hotel ID is required")
-    private String id;
+    private String hotelIden;
 
     private String name;
     private LocationDTO location;

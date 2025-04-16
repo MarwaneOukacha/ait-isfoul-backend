@@ -40,6 +40,7 @@ public class UserDaoImp implements UserDao {
         if(userRole!=null){
             user.setRole(userRole);
         }else {
+            log.error("userDao :: addUser userRole is null");
             throw new EntityNotFoundException("Role not found");
         }
 
@@ -90,5 +91,12 @@ public class UserDaoImp implements UserDao {
     public Page<User> findAllWithCriteria(SearchUserCriteria criteria, Pageable pageable) {
         log.info("UserDaoImpl :: findAllWithCriteria {}", criteria);
         return userRepository.findAllWithCriteria(criteria, pageable);
+    }
+
+    @Override
+    public User getUserById(String ownerId) {
+        return userRepository.findById(UUID.fromString(ownerId)).orElseThrow(
+                () -> new EntityNotFoundException("User not found with id: " + ownerId)
+        );
     }
 }

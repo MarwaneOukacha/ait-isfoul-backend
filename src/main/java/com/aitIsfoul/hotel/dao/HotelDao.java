@@ -8,10 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface HotelDao {
-    Hotel addUser(AddHotelRequestDTO addHotelRequestDTO);
+    Hotel addHotel(AddHotelRequestDTO addHotelRequestDTO);
 
-    Hotel updateUser(UpdateHotelRequestDTO updateHotelRequestDTO);
-    User getUserByIdentifier(String identifier);
+    Hotel updateHotel(UpdateHotelRequestDTO updateHotelRequestDTO);
+    Hotel getHotelByIdentifier(String identifier);
 
     Page<Hotel> findAllWithCriteria(SearchHotelCriteriaDTO criteria, Pageable pageable);
 }

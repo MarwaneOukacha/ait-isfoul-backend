@@ -26,4 +26,5 @@ public class Hotel extends AbstractEntity {
     private User owner;
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomImage> images;
+    private String hotelIden;
 }

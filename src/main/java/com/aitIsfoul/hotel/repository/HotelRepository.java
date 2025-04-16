@@ -11,9 +11,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface HotelRepository extends JpaRepository<Hotel, UUID>, JpaSpecificationExecutor<Hotel> {
+    Optional<Hotel> findByHotelIden(String hotelIden);
     default Page<Hotel> findAllWithCriteria(SearchHotelCriteriaDTO criteria, Pageable pageable) {
         return findAll((Specification<Hotel>) (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
