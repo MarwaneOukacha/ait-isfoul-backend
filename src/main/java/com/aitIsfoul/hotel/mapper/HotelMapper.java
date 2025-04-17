@@ -2,13 +2,18 @@ package com.aitIsfoul.hotel.mapper;
 
 import com.aitIsfoul.hotel.entity.Hotel;
 import com.aitIsfoul.hotel.entity.RoomImage;
+import com.aitIsfoul.hotel.entity.User;
 import com.aitIsfoul.hotel.entity.dto.LocationDTO;
 import com.aitIsfoul.hotel.entity.dto.RoomImageDTO;
 import com.aitIsfoul.hotel.entity.dto.request.AddHotelRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.response.AddHotelResponseDTO;
+import com.aitIsfoul.hotel.entity.dto.response.SearchHotelResponseDTO;
+import com.aitIsfoul.hotel.entity.dto.response.SearchUserResponse;
 import com.aitIsfoul.hotel.entity.dto.response.UpdateHotelResponseDTO;
 import com.aitIsfoul.hotel.entity.model.Location;
 import org.mapstruct.*;
+import org.springframework.data.domain.Page;
+
 import java.util.Base64;
 import java.util.List;
 @Mapper(componentModel = "spring")
@@ -19,12 +24,16 @@ public interface HotelMapper {
     @Mapping(target = "images", source = "images")
     Hotel addHotelRequestDtoToHotel(AddHotelRequestDTO dto);
 
+    SearchHotelResponseDTO searchHotelResponsedtoToHotel(Hotel hotel);
     // Entity → DTO
     AddHotelResponseDTO hotelToAddHotelResponseDTO(Hotel hotel);
 
     Location toLocation(LocationDTO dto);
     LocationDTO toLocationDTO(Location location);
 
+    default Page<SearchHotelResponseDTO> hotelPageToSearchHotelResponseDTO(Page<Hotel> hotels) {
+        return hotels.map(this::searchHotelResponsedtoToHotel);
+    }
     @Mapping(target = "hotel", ignore = true)
     @Mapping(target = "data", source = "data", qualifiedByName = "base64ToBytes")
     RoomImage toRoomImage(RoomImageDTO dto);

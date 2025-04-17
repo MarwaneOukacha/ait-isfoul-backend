@@ -91,6 +91,7 @@ public class HotelDaoImp implements HotelDao {
 
     @Override
     public Page<Hotel> findAllWithCriteria(SearchHotelCriteriaDTO criteria, Pageable pageable) {
-        return null;
+        log.info("HotelDaoImp :: findAllWithCriteria  -> {}", criteria);
+        return hotelRepository.findAllWithCriteria(criteria,pageable);
     }
 }
