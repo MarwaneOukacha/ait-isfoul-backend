@@ -4,7 +4,9 @@ import com.aitIsfoul.hotel.entity.Payment;
 import com.aitIsfoul.hotel.entity.dto.request.PaymentConfirmationRequest;
 import com.aitIsfoul.hotel.entity.dto.request.PaymentRequest;
 import com.aitIsfoul.hotel.entity.dto.response.PaymentConfirmationResponse;
+import com.aitIsfoul.hotel.entity.dto.response.PaymentResponseDTO;
 import com.aitIsfoul.hotel.services.PaymentService;
+import com.stripe.exception.StripeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,16 +25,11 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping("/create")
-    public ResponseEntity<Map<String, String>> createPaymentIntent(@RequestBody PaymentRequest paymentRequest) {
-        String clientSecret = paymentService.createPaymentIntent(paymentRequest);
-        Map<String, String> response = new HashMap<>();
-        response.put("clientSecret", clientSecret);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<PaymentResponseDTO> createPaymentIntent(@RequestBody PaymentRequest paymentRequest) throws StripeException {
+
+        PaymentResponseDTO payment = paymentService.createPayment(paymentRequest);
+        return ResponseEntity.ok(payment);
     }
 
-    @PostMapping("/confirm")
-    public ResponseEntity<Payment> confirmPayment(@RequestBody PaymentConfirmationRequest confirmationRequest) {
-        PaymentConfirmationResponse payment = paymentService.confirmPayment(confirmationRequest);
-        return null;
-    }
+
 }

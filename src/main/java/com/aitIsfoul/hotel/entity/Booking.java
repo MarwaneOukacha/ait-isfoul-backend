@@ -4,6 +4,7 @@ import com.aitIsfoul.hotel.enums.BookingStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @AttributeOverride(name = "id", column = @Column(name = "booking_id"))
+@Data
 public class Booking extends AbstractEntity {
 
     @OneToOne
@@ -29,6 +31,9 @@ public class Booking extends AbstractEntity {
     private BookingStatus status;
     @Column(name = "Booking_reference", length = 100, unique = true)
     private String bookingReference;
+    @ManyToOne
+    @JoinColumn(name = "currency_id", nullable = false)
+    private Currency currency;
 }
 
 
