@@ -48,13 +48,11 @@ public class StripeWebhookController {
                 log.info("Payment succeeded for booking reference: {}", bookingReference);
 
                 // Find booking using the booking reference
-                Booking booking = bookingDao.findByBookingReference(bookingReference).get();
-                if (booking != null) {
-                    booking.setStatus(BookingStatus.SUCCESSFUL);
-                    bookingDao.save(booking);
+                Booking booking = bookingDao.findByBookingReference(bookingReference);
+                booking.setStatus(BookingStatus.SUCCESSFUL);
+                bookingDao.save(booking);
 
-                    log.info("Booking {} updated to CONFIRMED", bookingReference);
-                }
+                log.info("Booking {} updated to CONFIRMED", bookingReference);
             }
         }
 

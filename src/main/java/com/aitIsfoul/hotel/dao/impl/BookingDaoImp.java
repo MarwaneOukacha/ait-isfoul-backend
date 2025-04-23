@@ -5,6 +5,7 @@ import com.aitIsfoul.hotel.entity.Booking;
 import com.aitIsfoul.hotel.repository.BookingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,26 +14,53 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BookingDaoImp implements BookingDao {
+
     private final BookingRepository bookingRepository;
+
     @Override
     public Booking getBookingById(String id) {
-        Booking booking = bookingRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
-        return booking;
+        log.info("Fetching booking by ID: {}", id);
+        try {
+            Booking booking = bookingRepository.findById(UUID.fromString(id))
+                    .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+            log.debug("Booking retrieved successfully: {}", booking.getBookingReference());
+            return booking;
+        } catch (EntityNotFoundException e) {
+            log.warn("Booking not found for ID: {}", id);
+            throw e;
+        }
     }
+
     @Override
     public boolean isRoomAvailable(String roomId, LocalDate checkIn, LocalDate checkOut) {
-        return bookingRepository.isRoomAvailable(UUID.fromString(roomId), checkIn, checkOut);
+        log.info("Checking availability for roomId: {}, from {} to {}", roomId, checkIn, checkOut);
+        boolean available = bookingRepository.isRoomAvailable(UUID.fromString(roomId), checkIn, checkOut);
+        log.debug("Room availability for roomId {}: {}", roomId, available);
+        return available;
     }
 
     @Override
     public Booking save(Booking booking) {
-        return bookingRepository.save(booking);
+        log.info("Saving booking for client: {}, reference: {}", booking.getClient().getEmail(), booking.getBookingReference());
+        Booking saved = bookingRepository.save(booking);
+        log.debug("Booking saved with ID: {}", saved.getId());
+        return saved;
     }
 
     @Override
-    public Optional<Booking> findByBookingReference(String reference) {
-        return bookingRepository.findByBookingReference(reference);
+    public Booking findByBookingReference(String reference) {
+        log.info("Fetching booking by reference: {}", reference);
+        try {
+            Booking booking = bookingRepository.findByBookingReference(reference)
+                    .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+            log.debug("Booking found: ID = {}", booking.getId());
+            return booking;
+        } catch (EntityNotFoundException e) {
+            log.warn("Booking not found for reference: {}", reference);
+            throw e;
+        }
     }
 }
+

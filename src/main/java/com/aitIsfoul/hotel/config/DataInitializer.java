@@ -50,7 +50,7 @@ public class DataInitializer {
                 Role userRole = roleRepository.findByRoleName(RoleType.USER).orElseThrow();
 
                 User admin = createUser("MARWANE", "OUKACHA", "123456789", "marwaneoukacha2001@gmail.com", adminRole, UserType.SYS,"PB267544");
-                User admin2 = createUser("Kamal", "aitisfoul", "987654321", "kamal@gmail.com", adminRole, UserType.SYS,"MK267544");
+                User admin2 = createUser("Kamal", "aitisfoul", "987654321", "oukachamarwane0@gmail.com", adminRole, UserType.SYS,"MK267544");
 
                 userRepository.saveAll(List.of(admin, admin2));
                 log.info("Users added to the database.");

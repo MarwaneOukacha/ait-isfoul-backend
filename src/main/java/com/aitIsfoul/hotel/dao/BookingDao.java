@@ -9,5 +9,7 @@ public interface BookingDao {
     Booking getBookingById(String id);
     boolean isRoomAvailable(String roomId, LocalDate checkIn, LocalDate checkOut);
     Booking save(Booking booking);
-    Optional<Booking> findByBookingReference(String reference);
+    Booking findByBookingReference(String reference);
+
+
 }
