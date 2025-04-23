@@ -9,6 +9,7 @@ import com.aitIsfoul.hotel.entity.dto.request.AddRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.UpdateRoomRequestDTO;
 import com.aitIsfoul.hotel.enums.RoomStatus;
 import com.aitIsfoul.hotel.repository.RoomRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -118,5 +119,11 @@ public class RoomDaoImp implements RoomDao {
         log.info("Room updated successfully with ID: {}", updatedRoom.getId());
 
         return updatedRoom;
+    }
+
+    @Override
+    public Room findById(String roomId) {
+        return  roomRepository.findById(UUID.fromString(roomId))
+                .orElseThrow(() -> new EntityNotFoundException("Room not found"));
     }
 }

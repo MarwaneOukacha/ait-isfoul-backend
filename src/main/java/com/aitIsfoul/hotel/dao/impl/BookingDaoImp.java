@@ -7,6 +7,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,5 +20,19 @@ public class BookingDaoImp implements BookingDao {
         Booking booking = bookingRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
         return booking;
+    }
+    @Override
+    public boolean isRoomAvailable(String roomId, LocalDate checkIn, LocalDate checkOut) {
+        return bookingRepository.isRoomAvailable(roomId, checkIn, checkOut);
+    }
+
+    @Override
+    public Booking save(Booking booking) {
+        return bookingRepository.save(booking);
+    }
+
+    @Override
+    public Optional<Booking> findByBookingReference(String reference) {
+        return bookingRepository.findByBookingReference(reference);
     }
 }

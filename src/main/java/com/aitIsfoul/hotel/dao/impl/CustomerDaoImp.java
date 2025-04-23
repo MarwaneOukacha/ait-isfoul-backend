@@ -82,4 +82,10 @@ public class CustomerDaoImp implements CustomerDao {
 
         return customerRepository.save(customer);
     }
+
+    @Override
+    public Customer findById(String clientId) {
+        return customerRepository.findById(UUID.fromString(clientId))
+                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
+    }
 }

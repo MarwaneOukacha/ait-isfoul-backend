@@ -8,6 +8,6 @@ import com.aitIsfoul.hotel.entity.dto.response.PaymentResponseDTO;
 import com.stripe.exception.StripeException;
 
 public interface PaymentService {
-    PaymentResponseDTO createPayment(PaymentRequest paymentRequest) throws StripeException;
+    public PaymentResponseDTO createPayment(Booking booking) throws StripeException;
 
 }

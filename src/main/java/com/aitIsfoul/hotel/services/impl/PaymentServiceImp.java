@@ -1,81 +1,70 @@
 package com.aitIsfoul.hotel.services.impl;
-
 import com.aitIsfoul.hotel.dao.BookingDao;
 import com.aitIsfoul.hotel.dao.PaymentDao;
 import com.aitIsfoul.hotel.entity.Booking;
-import com.aitIsfoul.hotel.entity.dto.request.PaymentRequest;
 import com.aitIsfoul.hotel.entity.dto.response.PaymentResponseDTO;
-import com.aitIsfoul.hotel.enums.PaymentMethode;
-import com.aitIsfoul.hotel.repository.BookingRepository;
 import com.aitIsfoul.hotel.repository.PaymentRepository;
 import com.aitIsfoul.hotel.services.PaymentService;
 import com.aitIsfoul.hotel.utils.StripeHttpClient;
-import com.stripe.exception.StripeException;
-import com.stripe.model.billingportal.Session;
+import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
 public class PaymentServiceImp implements PaymentService {
+
     private final PaymentRepository paymentRepository;
-    private final BookingRepository bookingRepository;
     private final StripeHttpClient stripeHttpClient;
     private final PaymentDao paymentDao;
     private final BookingDao bookingDao;
 
-
     @Override
-    public PaymentResponseDTO createPayment(PaymentRequest paymentRequest) {
-        Booking booking =bookingDao.getBookingById(paymentRequest.getBookingId());
-
-        SessionCreateParams.Builder sessionBuilder = SessionCreateParams.builder()
-                .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("")
-                .setCancelUrl("")
-                .addLineItem(
-                        SessionCreateParams.LineItem.builder()
-                                .setQuantity((long) (booking.getAdultsCount() + booking.getKidsCount()))
-                                .setPriceData(
-                                        SessionCreateParams.LineItem.PriceData.builder()
-                                                .setCurrency("USD")
-                                                .setUnitAmount(booking.getRoom().getPrice().longValue())
-                                                .setProductData(
-                                                        SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                                .setName(booking.getRoom().getTitle())
-                                                                .build()
-                                                )
-                                                .build()
-                                )
-                                .build()
-                );
-
-        if (paymentRequest.getPaymentMethode() == PaymentMethode.CARD) {
-            sessionBuilder.addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD);
-        }
-        SessionCreateParams params = sessionBuilder.build();
-        Session session = null;
+    public PaymentResponseDTO createPayment(Booking booking) {
         try {
-            session = Session.create((Map<String, Object>) params);
-        }catch (Exception e){
-            log.error("");
-        }
-        if(session.getUrl()!=null){
-            return PaymentResponseDTO.
-                    builder()
-                    .paymentUrl(session.getUrl())
-                    .build();
-        }
+            SessionCreateParams.Builder sessionBuilder = SessionCreateParams.builder()
+                    .setMode(SessionCreateParams.Mode.PAYMENT)
+                    .setSuccessUrl("https://your-domain.com/success?session_id={CHECKOUT_SESSION_ID}")
+                    .setCancelUrl("https://your-domain.com/cancel")
+                    .addLineItem(
+                            SessionCreateParams.LineItem.builder()
+                                    .setQuantity(1L) // 1 Room booking, quantity usually 1 (you can customize if you want adults+kids)
+                                    .setPriceData(
+                                            SessionCreateParams.LineItem.PriceData.builder()
+                                                    .setCurrency(booking.getCurrency().toLowerCase())
+                                                    .setUnitAmount((long) (booking.getRoom().getPrice() * 100)) // Stripe needs price in cents
+                                                    .setProductData(
+                                                            SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                                                    .setName(booking.getRoom().getTitle())
+                                                                    .build()
+                                                    )
+                                                    .build()
+                                    )
+                                    .build()
+                    )
+                    .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD);
 
-        throw new RuntimeException("Strip session is null");
+            SessionCreateParams params = sessionBuilder.build();
 
+            Session session = stripeHttpClient.createSession(params); // stripeHttpClient should call Stripe API
+
+            if (session != null && session.getUrl() != null) {
+                return PaymentResponseDTO.builder()
+                        .paymentUrl(session.getUrl())
+                        .build();
+            }
+
+            throw new RuntimeException("Stripe session is null");
+
+        } catch (Exception e) {
+            log.error("Stripe Session creation failed", e);
+            throw new RuntimeException("Stripe Session creation error");
+        }
     }
-
 }

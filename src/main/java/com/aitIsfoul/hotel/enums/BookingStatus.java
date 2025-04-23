@@ -1,7 +1,7 @@
 package com.aitIsfoul.hotel.enums;
 
 public enum BookingStatus {
-    PENDING,
+    PENDING_PAYMENT,
     CANCELED,
     SUCCESSFUL
 }

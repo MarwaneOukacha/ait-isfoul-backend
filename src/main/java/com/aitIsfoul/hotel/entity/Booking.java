@@ -31,9 +31,7 @@ public class Booking extends AbstractEntity {
     private BookingStatus status;
     @Column(name = "Booking_reference", length = 100, unique = true)
     private String bookingReference;
-    @ManyToOne
-    @JoinColumn(name = "currency_id", nullable = false)
-    private Currency currency;
+    private String currency;
 }
 
 
