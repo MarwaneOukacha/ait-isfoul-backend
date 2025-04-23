@@ -20,7 +20,7 @@ public interface BookingRepository extends JpaRepository<Booking, UUID>, JpaSpec
             "OR (:checkOut BETWEEN b.checkIn AND b.checkOut) " +
             "OR (b.checkIn BETWEEN :checkIn AND :checkOut)" +
             ")")
-    boolean isRoomAvailable(@Param("roomId") String roomId,
+    boolean isRoomAvailable(@Param("roomId") UUID roomId,
                             @Param("checkIn") LocalDate checkIn,
                             @Param("checkOut") LocalDate checkOut);
 

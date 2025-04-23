@@ -7,8 +7,8 @@ import java.time.LocalDate;
 public class BookingRequestDTO {
     private String roomId;
     private String clientId;
-    private LocalDate checkIn;
-    private LocalDate checkOut;
+    private String  checkIn;
+    private String  checkOut;
     private int adultsCount;
     private int kidsCount;
     private String currency;

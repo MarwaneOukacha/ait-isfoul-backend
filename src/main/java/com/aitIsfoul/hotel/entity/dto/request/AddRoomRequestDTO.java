@@ -15,6 +15,7 @@ public class AddRoomRequestDTO {
     private String title;
 
     @NotNull(message = "Room type is required")
+
     private RoomType roomType;
 
     @Positive(message = "Maximum number of people must be greater than 0")

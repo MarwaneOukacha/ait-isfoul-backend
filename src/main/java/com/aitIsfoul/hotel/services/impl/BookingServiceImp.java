@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -33,8 +34,10 @@ public class BookingServiceImp implements BookingService {
     public BookingResponseDTO createBooking(BookingRequestDTO bookingRequest) throws StripeException {
 
         Room room = roomDao.findById(bookingRequest.getRoomId());
+        LocalDate checkInDate = LocalDate.parse(bookingRequest.getCheckIn());
+        LocalDate checkOutDate = LocalDate.parse(bookingRequest.getCheckOut());
 
-        boolean available = bookingDao.isRoomAvailable(bookingRequest.getRoomId(), bookingRequest.getCheckIn(), bookingRequest.getCheckOut());
+        boolean available = bookingDao.isRoomAvailable(bookingRequest.getRoomId(), checkInDate, checkOutDate);
         if (!available) {
             throw new IllegalStateException("Room not available");
         }
@@ -42,8 +45,8 @@ public class BookingServiceImp implements BookingService {
         Booking booking = new Booking();
         booking.setRoom(room);
         booking.setClient(customerDao.findById(bookingRequest.getClientId()));
-        booking.setCheckIn(bookingRequest.getCheckIn());
-        booking.setCheckOut(bookingRequest.getCheckOut());
+        booking.setCheckIn(checkInDate);
+        booking.setCheckOut(checkOutDate);
         booking.setAdultsCount(bookingRequest.getAdultsCount());
         booking.setKidsCount(bookingRequest.getKidsCount());
         booking.setCurrency(bookingRequest.getCurrency());

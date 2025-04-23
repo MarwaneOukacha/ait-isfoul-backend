@@ -24,6 +24,7 @@ public class Room extends AbstractEntity {
     private Double price;
     private String description;
     private String facilitiesDesc;
+    @Enumerated(EnumType.STRING)
     private RoomStatus roomStatus;
     @ManyToOne
     @JoinColumn(name = "hotel_id", nullable = false)

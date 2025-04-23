@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class BookingDaoImp implements BookingDao {
-    private BookingRepository bookingRepository;
+    private final BookingRepository bookingRepository;
     @Override
     public Booking getBookingById(String id) {
         Booking booking = bookingRepository.findById(UUID.fromString(id))
@@ -23,7 +23,7 @@ public class BookingDaoImp implements BookingDao {
     }
     @Override
     public boolean isRoomAvailable(String roomId, LocalDate checkIn, LocalDate checkOut) {
-        return bookingRepository.isRoomAvailable(roomId, checkIn, checkOut);
+        return bookingRepository.isRoomAvailable(UUID.fromString(roomId), checkIn, checkOut);
     }
 
     @Override
