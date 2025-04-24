@@ -3,6 +3,7 @@ package com.aitIsfoul.hotel.dao;
 import com.aitIsfoul.hotel.entity.Room;
 import com.aitIsfoul.hotel.entity.dto.SearchRoomDTO;
 import com.aitIsfoul.hotel.entity.dto.request.AddRoomRequestDTO;
+import com.aitIsfoul.hotel.entity.dto.request.CheckRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.UpdateRoomRequestDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

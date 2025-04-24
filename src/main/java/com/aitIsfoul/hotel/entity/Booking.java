@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Data
 public class Booking extends AbstractEntity {
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
     @ManyToOne

@@ -6,6 +6,7 @@ import com.aitIsfoul.hotel.entity.Hotel;
 import com.aitIsfoul.hotel.entity.Room;
 import com.aitIsfoul.hotel.entity.dto.SearchRoomDTO;
 import com.aitIsfoul.hotel.entity.dto.request.AddRoomRequestDTO;
+import com.aitIsfoul.hotel.entity.dto.request.CheckRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.UpdateRoomRequestDTO;
 import com.aitIsfoul.hotel.enums.RoomStatus;
 import com.aitIsfoul.hotel.repository.RoomRepository;
@@ -126,4 +127,6 @@ public class RoomDaoImp implements RoomDao {
         return  roomRepository.findById(UUID.fromString(roomId))
                 .orElseThrow(() -> new EntityNotFoundException("Room not found"));
     }
+
+
 }

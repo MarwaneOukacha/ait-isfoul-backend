@@ -46,7 +46,8 @@ public class StripeWebhookController {
             if (session != null) {
                 String bookingReference = session.getClientReferenceId(); // If you set it when creating the session
                 log.info("Payment succeeded for booking reference: {}", bookingReference);
-
+                log.info("payload : {}", payload);
+                log.info("sigHeader : {}", sigHeader);
                 // Find booking using the booking reference
                 Booking booking = bookingDao.findByBookingReference(bookingReference);
                 booking.setStatus(BookingStatus.SUCCESSFUL);

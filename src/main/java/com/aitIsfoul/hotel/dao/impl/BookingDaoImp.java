@@ -2,10 +2,14 @@ package com.aitIsfoul.hotel.dao.impl;
 
 import com.aitIsfoul.hotel.dao.BookingDao;
 import com.aitIsfoul.hotel.entity.Booking;
+import com.aitIsfoul.hotel.entity.dto.request.SearchBookingRequestDTO;
+import com.aitIsfoul.hotel.entity.dto.response.SearchBookingResponseDTO;
 import com.aitIsfoul.hotel.repository.BookingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -61,6 +65,11 @@ public class BookingDaoImp implements BookingDao {
             log.warn("Booking not found for reference: {}", reference);
             throw e;
         }
+    }
+
+    @Override
+    public Page<SearchBookingResponseDTO> findAllWithCriteria(SearchBookingRequestDTO criteria, Pageable pageable) {
+        return null;
     }
 }
 

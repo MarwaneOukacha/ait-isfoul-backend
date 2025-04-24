@@ -6,9 +6,12 @@ import com.aitIsfoul.hotel.dao.RoomDao;
 import com.aitIsfoul.hotel.entity.Booking;
 import com.aitIsfoul.hotel.entity.Customer;
 import com.aitIsfoul.hotel.entity.Room;
+import com.aitIsfoul.hotel.entity.dto.GenericPage;
 import com.aitIsfoul.hotel.entity.dto.request.BookingRequestDTO;
+import com.aitIsfoul.hotel.entity.dto.request.SearchBookingRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.response.BookingResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.PaymentResponseDTO;
+import com.aitIsfoul.hotel.entity.dto.response.SearchBookingResponseDTO;
 import com.aitIsfoul.hotel.enums.BookingMessage;
 import com.aitIsfoul.hotel.enums.BookingStatus;
 import com.aitIsfoul.hotel.enums.BookingSubject;
@@ -19,6 +22,8 @@ import com.aitIsfoul.hotel.services.PaymentService;
 import com.aitIsfoul.hotel.utils.Utils;
 import com.stripe.exception.StripeException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -93,5 +98,10 @@ public class BookingServiceImp implements BookingService {
     public Booking getBookingByRef(String bookingRef) {
         log.info("Fetching booking by reference: {}", bookingRef);
         return bookingDao.findByBookingReference(bookingRef);
+    }
+
+    @Override
+    public GenericPage<Page<SearchBookingResponseDTO>> findAllWithCriteria(SearchBookingRequestDTO criteria, Pageable pageable) {
+        return null;
     }
 }

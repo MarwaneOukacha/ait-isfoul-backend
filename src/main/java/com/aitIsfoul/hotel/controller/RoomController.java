@@ -3,6 +3,7 @@ package com.aitIsfoul.hotel.controller;
 import com.aitIsfoul.hotel.entity.dto.GenericPage;
 import com.aitIsfoul.hotel.entity.dto.SearchRoomDTO;
 import com.aitIsfoul.hotel.entity.dto.request.AddRoomRequestDTO;
+import com.aitIsfoul.hotel.entity.dto.request.CheckRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.UpdateRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.response.AddRoomResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.SearchRoomResponseDTO;
@@ -71,5 +72,10 @@ public class RoomController {
         log.info("Room updated successfully with ID: {}", response.getId());
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/isRoomAvailable")
+    public ResponseEntity<Boolean> checkRoomAvailibility(@RequestBody CheckRoomRequestDTO checkRoomRequestDTO){
+        return ResponseEntity.ok(roomService.isRoomAvailable(checkRoomRequestDTO));
     }
 }
