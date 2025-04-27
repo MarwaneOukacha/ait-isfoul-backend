@@ -1,5 +1,7 @@
 package com.aitIsfoul.hotel.entity.dto.response;
 
+import com.aitIsfoul.hotel.entity.Customer;
+import com.aitIsfoul.hotel.entity.Room;
 import com.aitIsfoul.hotel.enums.BookingStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SearchBookingResponseDTO {
     private String bookingReference;
-    private String clientName;
+    private Room room;
+    private Customer client;
     private String checkIn;
     private String checkOut;
     private BookingStatus status;

@@ -1,0 +1,101 @@
+package com.aitIsfoul.hotel.config;
+
+import com.aitIsfoul.hotel.entity.Permission;
+import com.aitIsfoul.hotel.entity.User;
+import com.aitIsfoul.hotel.repository.PermissionRepository;
+import com.aitIsfoul.hotel.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+@Slf4j
+public class SecurityConfig {
+
+    private final PermissionRepository permissionRepository;
+    private final UserRepository userRepository;
+    @Bean
+    public SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(csrf->csrf.disable())
+                .authorizeRequests(auth->auth.anyRequest().permitAll())
+                .sessionManagement(sess->sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .build();
+
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider p=new DaoAuthenticationProvider();
+        p.setUserDetailsService(userDetailsService());
+        p.setPasswordEncoder(passwordEncoder());
+        return p;
+    }
+    @Bean
+    public UserDetailsService userDetailsService(){
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                log.info("Attempting to load user with username: {}", username);
+
+                // Fetch the user by username
+                Optional<User> userOptional = userRepository.findByUsername(username);
+
+                if (userOptional.isPresent()) {
+                    User user = userOptional.get();
+                    log.info("User found with username: {}", username);
+
+                    // Get permissions for the user's role
+                    List<Permission> permissions = permissionRepository.findByRoleId(user.getRole().getId());
+                    log.debug("Found {} permissions for user: {}", permissions.size(), username);
+
+                    // Convert permissions to SimpleGrantedAuthority
+                    Collection<SimpleGrantedAuthority> authorities = permissions.stream()
+                            .filter(permission -> "Y".equalsIgnoreCase(permission.getIsPossible()))  // Only include active permissions
+                            .map(permission -> new SimpleGrantedAuthority(permission.getPermissionName().name()))  // Use Enum's name()
+                            .collect(Collectors.toList());
+
+                    log.debug("Assigned authorities: {}", authorities);
+
+                    // Return Spring Security's User object with username, password, and authorities
+                    return new org.springframework.security.core.userdetails.User(
+                            user.getEmail(),
+                            user.getPassword(),
+                            authorities
+                    );
+                } else {
+                    log.warn("User not found with username: {}", username);
+                    throw new UsernameNotFoundException("User not found with username: " + username);
+                }
+            }
+        };
+    }
+}

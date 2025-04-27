@@ -15,10 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "app_user")
 @AttributeOverride(name = "id", column = @Column(name = "user_id"))
-public class User extends AbstractUser {
+public class User extends AbstractUser  {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
-
-
 }

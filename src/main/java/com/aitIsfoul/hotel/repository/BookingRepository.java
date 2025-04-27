@@ -1,7 +1,13 @@
 package com.aitIsfoul.hotel.repository;
 
 import com.aitIsfoul.hotel.entity.Booking;
+import com.aitIsfoul.hotel.entity.Customer;
+import com.aitIsfoul.hotel.entity.Room;
 import com.aitIsfoul.hotel.entity.dto.request.SearchBookingRequestDTO;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -31,27 +37,36 @@ public interface BookingRepository extends JpaRepository<Booking, UUID>, JpaSpec
 
     Optional<Booking> findByBookingReference(String reference);
 
-    default Specification<Booking> withCriteria(SearchBookingRequestDTO criteria) {
-        return (root, query, cb) -> {
+    default Page<Booking> findAllWithCriteria(SearchBookingRequestDTO criteria, Pageable pageable) {
+        return this.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (criteria.getBookingReference() != null) {
-                predicates.add(cb.equal(root.get("bookingReference"), criteria.getBookingReference()));
-            }
             if (criteria.getCheckIn() != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("checkIn"), criteria.getCheckIn()));
+                predicates.add(cb.greaterThanOrEqualTo(root.get("checkIn"), LocalDate.parse(criteria.getCheckIn())));
             }
             if (criteria.getCheckOut() != null) {
-                predicates.add(cb.lessThanOrEqualTo(root.get("checkOut"), criteria.getCheckOut()));
+                predicates.add(cb.lessThanOrEqualTo(root.get("checkOut"), LocalDate.parse(criteria.getCheckOut())));
             }
             if (criteria.getStatus() != null) {
                 predicates.add(cb.equal(root.get("status"), criteria.getStatus()));
             }
-            if (criteria.getClientName() != null) {
-                predicates.add(cb.like(cb.lower(root.get("client").get("fullName")), "%" + criteria.getClientName().toLowerCase() + "%"));
+
+            if (criteria.getKeyword() != null && !criteria.getKeyword().isEmpty()) {
+                String keywordLike = "%" + criteria.getKeyword().toLowerCase() + "%";
+
+                Join<Booking, Customer> clientJoin = root.join("client", JoinType.LEFT);
+                Join<Booking, Room> roomJoin = root.join("room", JoinType.LEFT);
+
+                Predicate bookingRefPredicate = cb.like(cb.lower(root.get("bookingReference")), keywordLike);
+                Predicate clientNamePredicate = cb.like(cb.lower(clientJoin.get("name")), keywordLike);
+                Predicate roomNamePredicate = cb.like(cb.lower(roomJoin.get("name")), keywordLike);
+
+                predicates.add(cb.or(bookingRefPredicate, clientNamePredicate, roomNamePredicate));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));
-        };
+        }, pageable);
     }
+
+
 }

@@ -68,8 +68,8 @@ public class BookingDaoImp implements BookingDao {
     }
 
     @Override
-    public Page<SearchBookingResponseDTO> findAllWithCriteria(SearchBookingRequestDTO criteria, Pageable pageable) {
-        return null;
+    public Page<Booking> searchBookings(SearchBookingRequestDTO criteria, Pageable pageable) {
+        return bookingRepository.findAllWithCriteria(criteria,pageable);
     }
 }
 

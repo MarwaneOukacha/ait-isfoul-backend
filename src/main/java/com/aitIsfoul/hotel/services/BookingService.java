@@ -16,7 +16,7 @@ public interface BookingService {
     Booking getBookingById(String bookingId);
 
     Booking getBookingByRef(String bookingRef);
-    GenericPage<Page<SearchBookingResponseDTO>> findAllWithCriteria(SearchBookingRequestDTO criteria, Pageable pageable);
 
+    GenericPage<SearchBookingResponseDTO> searchBookings(SearchBookingRequestDTO searchBookingRequestDTO,Pageable pageable);
 
 }

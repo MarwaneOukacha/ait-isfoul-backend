@@ -100,8 +100,21 @@ public class BookingServiceImp implements BookingService {
         return bookingDao.findByBookingReference(bookingRef);
     }
 
+
+
     @Override
-    public GenericPage<Page<SearchBookingResponseDTO>> findAllWithCriteria(SearchBookingRequestDTO criteria, Pageable pageable) {
-        return null;
+    public GenericPage<SearchBookingResponseDTO> searchBookings(SearchBookingRequestDTO searchBookingRequestDTO, Pageable pageable) {
+        log.info("Starting booking search process with criteria: {}", searchBookingRequestDTO);
+
+        Page<Booking> bookingPage = bookingDao.searchBookings(searchBookingRequestDTO, pageable);
+
+        log.info("Found {} bookings matching search criteria", bookingPage.getTotalElements());
+
+        Page<SearchBookingResponseDTO> searchBookingResponseDTOS = bookingMapper.bookingsPageTobookingsResponsePage(bookingPage);
+
+        log.info("Mapped booking entities to booking response DTOs");
+
+        return new GenericPage<>(searchBookingResponseDTOS, searchBookingResponseDTOS.getTotalElements());
     }
+
 }

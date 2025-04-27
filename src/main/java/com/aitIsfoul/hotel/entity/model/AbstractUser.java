@@ -28,5 +28,6 @@ public abstract class AbstractUser extends AbstractEntity{
     private UserStatus status;
     @Enumerated(EnumType.STRING)
     private UserType type;
+    private String password;
 
 }

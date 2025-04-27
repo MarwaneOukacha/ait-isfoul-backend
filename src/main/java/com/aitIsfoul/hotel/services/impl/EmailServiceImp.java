@@ -1,8 +1,7 @@
-package com.aitIsfoul.hotel.services;
+package com.aitIsfoul.hotel.services.impl;
 
 import com.aitIsfoul.hotel.entity.Booking;
-import com.aitIsfoul.hotel.entity.Room;
-import com.aitIsfoul.hotel.entity.dto.request.BookingRequestDTO;
+import com.aitIsfoul.hotel.services.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -12,14 +11,18 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class EmailServiceImp implements EmailService{
+public class EmailServiceImp implements EmailService {
 
     private final JavaMailSender mailSender;
     @Override
     public void sendBookingConfirmation(String toEmail, String subject, String message, Booking booking) {
+        long daysBetween = ChronoUnit.DAYS.between(booking.getCheckIn(), booking.getCheckOut());
+
         String emailContent = "<html>" +
                 "<body>" +
                 "<h2>Booking Confirmation</h2>" +
@@ -41,6 +44,7 @@ public class EmailServiceImp implements EmailService{
                 "<tr><td><strong>Room Type:</strong></td><td>" + booking.getRoom().getRoomType() + "</td></tr>" +
                 "<tr><td><strong>Room Description:</strong></td><td>" + booking.getRoom().getDescription() + "</td></tr>" +
                 "<tr><td><strong>Price per Night:</strong></td><td>" + booking.getRoom().getPrice() + " " + booking.getCurrency() + "</td></tr>" +
+                "<tr><td><strong>Total price:</strong></td><td>" + booking.getRoom().getPrice()*daysBetween + " " + booking.getCurrency() + "</td></tr>"+
                 "</table>" +
 
                 "<h3>Payment Details:</h3>" +

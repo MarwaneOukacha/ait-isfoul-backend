@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, UUID> , JpaSpecifica
 
 
     Optional<User> findByIden(String iden);
-
+    Optional<User> findByUsername(String username);
 
     Optional<User> getUserByIden(String iden);
 

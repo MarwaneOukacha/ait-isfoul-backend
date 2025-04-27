@@ -14,7 +14,7 @@ public interface BookingDao {
     boolean isRoomAvailable(String roomId, LocalDate checkIn, LocalDate checkOut);
     Booking save(Booking booking);
     Booking findByBookingReference(String reference);
-    Page<SearchBookingResponseDTO> findAllWithCriteria(SearchBookingRequestDTO criteria, Pageable pageable);
+    Page<Booking> searchBookings(SearchBookingRequestDTO criteria, Pageable pageable);
 
 
 
