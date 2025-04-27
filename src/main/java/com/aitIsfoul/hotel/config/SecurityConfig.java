@@ -14,6 +14,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,13 +38,17 @@ public class SecurityConfig {
     private final PermissionRepository permissionRepository;
     private final UserRepository userRepository;
     @Bean
-    public SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf->csrf.disable())
-                .authorizeRequests(auth->auth.anyRequest().permitAll())
-                .sessionManagement(sess->sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login", "/refresh-token").permitAll()
+                        .anyRequest().authenticated()         // All others need authentication
+                )
+                .sessionManagement(seas -> seas.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
-
     }
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -67,7 +72,7 @@ public class SecurityConfig {
                 log.info("Attempting to load user with username: {}", username);
 
                 // Fetch the user by username
-                Optional<User> userOptional = userRepository.findByUsername(username);
+                Optional<User> userOptional = userRepository.findByEmail(username);
 
                 if (userOptional.isPresent()) {
                     User user = userOptional.get();

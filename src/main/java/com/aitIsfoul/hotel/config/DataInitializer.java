@@ -10,20 +10,24 @@ import com.aitIsfoul.hotel.enums.UserType;
 import com.aitIsfoul.hotel.repository.PermissionRepository;
 import com.aitIsfoul.hotel.repository.RoleRepository;
 import com.aitIsfoul.hotel.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class DataInitializer {
-    @Autowired
-    private PermissionRepository permissionRepository;
+
+    private final  PermissionRepository permissionRepository;
+    private final PasswordEncoder encoder;
 
     @Bean
     CommandLineRunner initDatabase(UserRepository userRepository, RoleRepository roleRepository) {
@@ -73,6 +77,7 @@ public class DataInitializer {
         user.setUpdated(LocalDateTime.now());
         user.setIden(iden);
         user.setStatus(UserStatus.ACTIVE);
+        user.setPassword(encoder.encode(iden));
         return user;
     }
 
