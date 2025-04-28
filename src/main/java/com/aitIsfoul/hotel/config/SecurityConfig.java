@@ -4,6 +4,7 @@ import com.aitIsfoul.hotel.entity.Permission;
 import com.aitIsfoul.hotel.entity.User;
 import com.aitIsfoul.hotel.repository.PermissionRepository;
 import com.aitIsfoul.hotel.repository.UserRepository;
+import com.aitIsfoul.hotel.utils.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -38,14 +39,15 @@ public class SecurityConfig {
     private final PermissionRepository permissionRepository;
     private final UserRepository userRepository;
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/refresh-token").permitAll()
-                        .anyRequest().authenticated()         // All others need authentication
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(seas -> seas.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

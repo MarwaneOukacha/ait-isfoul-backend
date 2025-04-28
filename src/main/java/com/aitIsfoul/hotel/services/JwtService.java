@@ -1,5 +1,8 @@
 package com.aitIsfoul.hotel.services;
 
+import io.jsonwebtoken.Claims;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,5 +12,8 @@ public interface JwtService {
     void validateToken(final String token);
 
     String refreshAccessToken(String refreshToken);
-
+    Claims extractClaims(String token);
+    boolean isTokenValid(String token, UserDetails userDetails);
+    boolean isTokenExpired(String token);
+    String extractUsername(String token);
 }

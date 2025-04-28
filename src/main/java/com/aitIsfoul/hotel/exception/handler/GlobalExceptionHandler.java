@@ -38,5 +38,4 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    // You can add more @ExceptionHandler methods for specific exceptions (like BusinessException, NotFoundException, etc.)
 }

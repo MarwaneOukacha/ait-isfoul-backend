@@ -23,7 +23,7 @@ public class EmailController {
     private final BookingService bookingService;
     private final EmailService emailService;
 
-    @PostMapping("/{bookingRef}/notify")
+    @PostMapping("/{bookingRef}/sendEmail")
     public ResponseEntity<String> sendBookingConfirmationEmail(@PathVariable String bookingRef) {
         log.info("Received request to send booking confirmation for bookingRef: {}", bookingRef);
 

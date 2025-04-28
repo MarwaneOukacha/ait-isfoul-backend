@@ -13,6 +13,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -31,7 +32,8 @@ public class JwtServiceImp implements JwtService {
     private final PermissionRepository permissionRepository;
 
     @Value("${app.jwt-secret}")
-    private String SECRET;
+    private static final String SECRET = "b2FpU0hyU2RKNnJ2OUU5VHdGTWNUV2ZpVVpXbU10V1l1QlFuUXdXRA=="; // Valid
+
 
     @Override
     public Map<String, String> generateToken(String email) {
@@ -53,6 +55,8 @@ public class JwtServiceImp implements JwtService {
                 .collect(Collectors.toList());
 
         claims.put("email", username);
+        claims.put("userID", user.getId());
+        claims.put("userIden", user.getIden());
         claims.put("role", role.getRoleName());
         claims.put("permissions", permissionNames);  // Add permissions to token
 
@@ -104,7 +108,7 @@ public class JwtServiceImp implements JwtService {
     public String refreshAccessToken(String refreshToken) {
         log.info("Refreshing access token...");
         try {
-            Claims claims = extractAllClaims(refreshToken);
+            Claims claims = extractClaims(refreshToken);
             String email = claims.getSubject(); // Email is subject
 
             log.debug("Email extracted from refresh token: {}", email);
@@ -138,12 +142,10 @@ public class JwtServiceImp implements JwtService {
         }
     }
 
-
-    private Claims extractAllClaims(String token) {
-        log.debug("Extracting all claims from token...");
-        return Jwts.parserBuilder()
-                .setSigningKey(getSignKey())
-                .build()
+    @Override
+    public Claims extractClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET)
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -153,4 +155,22 @@ public class JwtServiceImp implements JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+    @Override
+    public boolean isTokenExpired(String token) {
+        return extractClaims(token).getExpiration().before(new Date());
+    }
+    // Method to extract the username (email in your case) from the token
+    @Override
+    public String extractUsername(String token) {
+        return extractClaims(token).getSubject();
+    }
+
+
+    // Method to validate the token
+    @Override
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    }
 }
+
