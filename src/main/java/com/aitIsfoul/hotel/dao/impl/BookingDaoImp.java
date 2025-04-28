@@ -3,7 +3,6 @@ package com.aitIsfoul.hotel.dao.impl;
 import com.aitIsfoul.hotel.dao.BookingDao;
 import com.aitIsfoul.hotel.entity.Booking;
 import com.aitIsfoul.hotel.entity.dto.request.SearchBookingRequestDTO;
-import com.aitIsfoul.hotel.entity.dto.response.SearchBookingResponseDTO;
 import com.aitIsfoul.hotel.repository.BookingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -47,7 +45,7 @@ public class BookingDaoImp implements BookingDao {
 
     @Override
     public Booking save(Booking booking) {
-        log.info("Saving booking for client: {}, reference: {}", booking.getClient().getEmail(), booking.getBookingReference());
+        log.info("Saving booking for client: {}, reference: {}", booking.getCustomer().getEmail(), booking.getBookingReference());
         Booking saved = bookingRepository.save(booking);
         log.debug("Booking saved with ID: {}", saved.getId());
         return saved;

@@ -34,16 +34,16 @@ public class EmailController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Booking not found");
             }
 
-            log.info("Booking found. Sending confirmation email to: {}", booking.getClient().getEmail());
+            log.info("Booking found. Sending confirmation email to: {}", booking.getCustomer().getEmail());
 
             emailService.sendBookingConfirmation(
-                    booking.getClient().getEmail(),
+                    booking.getCustomer().getEmail(),
                     BookingSubject.BOOKING_CONFIRMATION.getSubject(),
                     BookingMessage.NOTIFICATION_EMAIL_SENT.getMessage(),
                     booking
             );
 
-            log.info("Booking confirmation email sent successfully to: {}", booking.getClient().getEmail());
+            log.info("Booking confirmation email sent successfully to: {}", booking.getCustomer().getEmail());
             return ResponseEntity.ok("Booking confirmation email sent successfully");
 
         } catch (Exception e) {

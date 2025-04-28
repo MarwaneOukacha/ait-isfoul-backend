@@ -12,9 +12,7 @@ import com.aitIsfoul.hotel.entity.dto.request.SearchBookingRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.response.BookingResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.PaymentResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.SearchBookingResponseDTO;
-import com.aitIsfoul.hotel.enums.BookingMessage;
 import com.aitIsfoul.hotel.enums.BookingStatus;
-import com.aitIsfoul.hotel.enums.BookingSubject;
 import com.aitIsfoul.hotel.mapper.BookingMapper;
 import com.aitIsfoul.hotel.services.BookingService;
 import com.aitIsfoul.hotel.services.EmailService;
@@ -29,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +43,7 @@ public class BookingServiceImp implements BookingService {
     @Override
     @Transactional
     public BookingResponseDTO createBooking(BookingRequestDTO bookingRequest) throws StripeException {
-        log.info("Starting booking creation process for client: {}", bookingRequest.getClientId());
+        log.info("Starting booking creation process for client: {}", bookingRequest.getCustomerId());
 
         Room room = roomDao.findById(bookingRequest.getRoomId());
         log.debug("Room retrieved: ID = {}", room.getId());
@@ -61,12 +58,12 @@ public class BookingServiceImp implements BookingService {
             throw new IllegalStateException("Room not available");
         }
 
-        Customer customer = customerDao.findById(bookingRequest.getClientId());
+        Customer customer = customerDao.findById(bookingRequest.getCustomerId());
         log.debug("Customer retrieved: ID = {}, Email = {}", customer.getId(), customer.getEmail());
 
         Booking booking = new Booking();
         booking.setRoom(room);
-        booking.setClient(customer);
+        booking.setCustomer(customer);
         booking.setCheckIn(checkInDate);
         booking.setCheckOut(checkOutDate);
         booking.setAdultsCount(bookingRequest.getAdultsCount());

@@ -28,6 +28,8 @@ public class AddUserRequest {
 
     @NotNull(message = "User type is required")
     private UserType type;
-    @NotBlank(message = "iden is required")
+    @NotBlank(message = "Identifier is required")
     private String iden;
+    @NotBlank(message = "Password is required")
+    private String password;
 }

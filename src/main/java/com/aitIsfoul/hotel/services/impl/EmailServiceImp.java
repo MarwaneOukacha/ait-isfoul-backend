@@ -26,7 +26,7 @@ public class EmailServiceImp implements EmailService {
         String emailContent = "<html>" +
                 "<body>" +
                 "<h2>Booking Confirmation</h2>" +
-                "<p>Dear " + booking.getClient().getFirstName()+" "+booking.getClient().getLastName() + ",</p>" +
+                "<p>Dear " + booking.getCustomer().getFirstName()+" "+booking.getCustomer().getLastName() + ",</p>" +
                 "<p>Thank you for choosing our services! Your booking has been successfully confirmed. Here are the details of your booking:</p>" +
 
                 "<h3>Booking Details:</h3>" +

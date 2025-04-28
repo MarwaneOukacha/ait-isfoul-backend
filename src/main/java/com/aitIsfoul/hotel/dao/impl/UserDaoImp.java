@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -30,6 +31,8 @@ public class UserDaoImp implements UserDao {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private PasswordEncoder encoder;
 
 
     @Override
@@ -45,6 +48,7 @@ public class UserDaoImp implements UserDao {
         }
 
         user.setIsActive("Y");
+        user.setPassword(encoder.encode(addUserRequest.getPassword()));
         user.setStatus(UserStatus.INACTIVE);
         return userRepository.save(user);
     }

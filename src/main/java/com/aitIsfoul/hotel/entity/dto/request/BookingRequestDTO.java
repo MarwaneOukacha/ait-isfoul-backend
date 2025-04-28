@@ -1,12 +1,11 @@
 package com.aitIsfoul.hotel.entity.dto.request;
 
 import lombok.Data;
-import java.time.LocalDate;
 
 @Data
 public class BookingRequestDTO {
     private String roomId;
-    private String clientId;
+    private String customerId;
     private String  checkIn;
     private String  checkOut;
     private int adultsCount;

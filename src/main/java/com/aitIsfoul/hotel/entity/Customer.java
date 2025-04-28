@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @Entity
 @Builder
-@AttributeOverride(name = "id", column = @Column(name = "client_id"))
+@AttributeOverride(name = "id", column = @Column(name = "customer_id"))
 public class Customer extends AbstractUser {
 
 }
