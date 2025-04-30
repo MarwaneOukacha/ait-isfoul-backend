@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.time.temporal.ChronoUnit;
 
 @Service
@@ -19,15 +20,27 @@ import java.time.temporal.ChronoUnit;
 public class EmailServiceImp implements EmailService {
 
     private final JavaMailSender mailSender;
+
     @Override
     public void sendBookingConfirmation(String toEmail, String subject, String message, Booking booking) {
         long daysBetween = ChronoUnit.DAYS.between(booking.getCheckIn(), booking.getCheckOut());
 
-        String emailContent = "<html>" +
+        String plainText = "Dear " + booking.getCustomer().getFirstName() + " " + booking.getCustomer().getLastName() + ",\n\n"
+                + "Thank you for choosing our services! Your booking has been confirmed.\n"
+                + "Booking Reference: " + booking.getBookingReference() + "\n"
+                + "Check-in: " + booking.getCheckIn() + "\n"
+                + "Check-out: " + booking.getCheckOut() + "\n"
+                + "Room Type: " + booking.getRoom().getRoomType() + "\n"
+                + "Total Price: " + (booking.getRoom().getPrice() * daysBetween) + " " + booking.getCurrency() + "\n\n"
+                + "Your payment is being processed and will be confirmed shortly.\n\n"
+                + "Best regards,\n"
+                + booking.getRoom().getHotel().getName() + " Hotel Team";
+
+        String htmlContent = "<html>" +
                 "<body>" +
                 "<h2>Booking Confirmation</h2>" +
-                "<p>Dear " + booking.getCustomer().getFirstName()+" "+booking.getCustomer().getLastName() + ",</p>" +
-                "<p>Thank you for choosing our services! Your booking has been successfully confirmed. Here are the details of your booking:</p>" +
+                "<p>Dear " + booking.getCustomer().getFirstName() + " " + booking.getCustomer().getLastName() + ",</p>" +
+                "<p>Thank you for choosing our services! Your booking has been successfully confirmed. Here are the details:</p>" +
 
                 "<h3>Booking Details:</h3>" +
                 "<table>" +
@@ -37,38 +50,50 @@ public class EmailServiceImp implements EmailService {
                 "<tr><td><strong>Adults:</strong></td><td>" + booking.getAdultsCount() + "</td></tr>" +
                 "<tr><td><strong>Children:</strong></td><td>" + booking.getKidsCount() + "</td></tr>" +
                 "<tr><td><strong>Currency:</strong></td><td>" + booking.getCurrency() + "</td></tr>" +
+                "<tr><td><strong>First Name:</strong></td><td>" + booking.getFirstName() + "</td></tr>" +
+                "<tr><td><strong>Email:</strong></td><td>" + booking.getEmail() + "</td></tr>" +
+                "<tr><td><strong>Phone number:</strong></td><td>" + booking.getPhoneNumber() + "</td></tr>" +
                 "</table>" +
 
                 "<h3>Room Details:</h3>" +
                 "<table>" +
                 "<tr><td><strong>Room Type:</strong></td><td>" + booking.getRoom().getRoomType() + "</td></tr>" +
-                "<tr><td><strong>Room Description:</strong></td><td>" + booking.getRoom().getDescription() + "</td></tr>" +
+                "<tr><td><strong>Description:</strong></td><td>" + booking.getRoom().getDescription() + "</td></tr>" +
                 "<tr><td><strong>Price per Night:</strong></td><td>" + booking.getRoom().getPrice() + " " + booking.getCurrency() + "</td></tr>" +
-                "<tr><td><strong>Total price:</strong></td><td>" + booking.getRoom().getPrice()*daysBetween + " " + booking.getCurrency() + "</td></tr>"+
+                "<tr><td><strong>Total Price:</strong></td><td>" + (booking.getRoom().getPrice() * daysBetween) + " " + booking.getCurrency() + "</td></tr>" +
                 "</table>" +
 
-                "<h3>Payment Details:</h3>" +
-                "<p>Your payment is still pending.It will be confirmed just in few minutes</p>" +
-                //"<a href=\"" + bookingRequest.getCheckoutUrl() + "\">Complete Payment</a>" +
+                "<h3>Payment Status:</h3>" +
+                "<p>Your payment is being processed and will be confirmed shortly.</p>" +
 
-                "<p>If you have any questions or need assistance, feel free to contact us.</p>" +
+                "<p>If you have any questions, feel free to contact us.</p>" +
                 "<br>" +
                 "<p>Best regards,</p>" +
-                "<p>"+booking.getRoom().getHotel().getName()+" Hotel Team</p>" +
+                "<p>" + booking.getRoom().getHotel().getName() + " Hotel Team</p>" +
                 "</body>" +
                 "</html>";
 
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
+            // Set From Address (use your actual domain!)
+            helper.setFrom("noreply@yourdomain.com", booking.getRoom().getHotel().getName() + " Hotel");
+
             helper.setTo(toEmail);
             helper.setSubject(subject);
-            helper.setText(emailContent, true);  // true for HTML content
+
+            // Set both plain text and HTML version
+            helper.setText(plainText, htmlContent);
+
+            // Optional headers to improve deliverability
+            mimeMessage.addHeader("X-Priority", "1");
+            mimeMessage.addHeader("X-Mailer", "JavaMailer");
+            mimeMessage.addHeader("List-Unsubscribe", "<mailto:unsubscribe@yourdomain.com>");
+
             mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
-            e.printStackTrace(); // Log the exception
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            e.printStackTrace(); // Or use proper logging
         }
     }
-
-
 }
