@@ -32,6 +32,9 @@ public class Booking extends AbstractEntity {
     @Column(name = "Booking_reference", length = 100, unique = true)
     private String bookingReference;
     private String currency;
+    private String firstName;
+    private String email;
+    private String phoneNumber;
 }
 
 

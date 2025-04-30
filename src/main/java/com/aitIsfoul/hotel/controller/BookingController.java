@@ -48,4 +48,9 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.searchBookings(searchBookingRequestDTO,pageable));
     }
 
+    @GetMapping("/{ref}")
+    public BookingResponseDTO getBooking(@RequestParam String ref){
+        return bookingService.getBookingResponseDtoByRef(ref);
+    }
+
 }

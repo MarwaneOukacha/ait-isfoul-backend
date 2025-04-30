@@ -71,7 +71,9 @@ public class BookingServiceImp implements BookingService {
         booking.setCurrency(bookingRequest.getCurrency());
         booking.setStatus(BookingStatus.PENDING_PAYMENT);
         booking.setBookingReference(Utils.generateBookingCode());
-
+        booking.setFirstName(bookingRequest.getFirstName());
+        booking.setPhoneNumber(bookingRequest.getPhoneNumber());
+        booking.setEmail(bookingRequest.getEmail());
         booking = bookingDao.save(booking);
         log.info("Booking saved: Reference = {}", booking.getBookingReference());
 
@@ -92,11 +94,16 @@ public class BookingServiceImp implements BookingService {
     }
 
     @Override
+    public BookingResponseDTO getBookingResponseDtoByRef(String bookingRef) {
+        log.info("Fetching booking dto by reference: {}", bookingRef);
+        Booking BookingReference = bookingDao.findByBookingReference(bookingRef);
+        return bookingMapper.toBookingResponseDTO(BookingReference);
+    }
+    @Override
     public Booking getBookingByRef(String bookingRef) {
         log.info("Fetching booking by reference: {}", bookingRef);
         return bookingDao.findByBookingReference(bookingRef);
     }
-
 
 
     @Override

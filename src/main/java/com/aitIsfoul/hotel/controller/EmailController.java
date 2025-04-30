@@ -1,6 +1,7 @@
 package com.aitIsfoul.hotel.controller;
 
 import com.aitIsfoul.hotel.entity.Booking;
+import com.aitIsfoul.hotel.entity.dto.response.BookingResponseDTO;
 import com.aitIsfoul.hotel.enums.BookingMessage;
 import com.aitIsfoul.hotel.enums.BookingSubject;
 import com.aitIsfoul.hotel.services.BookingService;
@@ -37,7 +38,7 @@ public class EmailController {
             log.info("Booking found. Sending confirmation email to: {}", booking.getCustomer().getEmail());
 
             emailService.sendBookingConfirmation(
-                    booking.getCustomer().getEmail(),
+                    booking.getEmail(),
                     BookingSubject.BOOKING_CONFIRMATION.getSubject(),
                     BookingMessage.NOTIFICATION_EMAIL_SENT.getMessage(),
                     booking

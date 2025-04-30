@@ -11,4 +11,7 @@ public class BookingRequestDTO {
     private int adultsCount;
     private int kidsCount;
     private String currency;
+    private String firstName;
+    private String email;
+    private String phoneNumber;
 }
