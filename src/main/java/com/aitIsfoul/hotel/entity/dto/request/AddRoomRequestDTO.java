@@ -32,6 +32,8 @@ public class AddRoomRequestDTO {
     @NotBlank(message = "Facilities description is required")
     @Size(max = 300, message = "Facilities description must not exceed 300 characters")
     private String facilitiesDesc;
-
+    @NotBlank(message = "Hotel identifier is required")
     private String hotelIden;
+    @NotBlank(message = "Size is required")
+    private String size;
 }

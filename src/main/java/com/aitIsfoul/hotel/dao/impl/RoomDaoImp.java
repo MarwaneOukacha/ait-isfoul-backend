@@ -54,6 +54,7 @@ public class RoomDaoImp implements RoomDao {
                 .price(addRoomRequestDTO.getPrice())
                 .description(addRoomRequestDTO.getDescription())
                 .facilitiesDesc(addRoomRequestDTO.getFacilitiesDesc())
+                .size(addRoomRequestDTO.getSize())
                 .roomStatus(RoomStatus.AVAILABLE) // Default: Available
                 .build();
         room.setIsActive("Y");

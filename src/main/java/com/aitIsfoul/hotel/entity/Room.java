@@ -29,4 +29,5 @@ public class Room extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
+    private String size;
 }
