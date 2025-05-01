@@ -30,8 +30,8 @@ public class PaymentServiceImp implements PaymentService {
         try {
             SessionCreateParams.Builder sessionBuilder = SessionCreateParams.builder()
                     .setMode(SessionCreateParams.Mode.PAYMENT)
-                    .setSuccessUrl("https://your-domain.com/success?session_id={CHECKOUT_SESSION_ID}")
-                    .setCancelUrl("https://your-domain.com/cancel")
+                    .setSuccessUrl("https://ait-isfoul-front.vercel.app/")
+                    .setCancelUrl("https://ait-isfoul-front.vercel.app/")
                     .addLineItem(
                             SessionCreateParams.LineItem.builder()
                                     .setQuantity(1L) // 1 Room booking, quantity usually 1 (you can customize if you want adults+kids)

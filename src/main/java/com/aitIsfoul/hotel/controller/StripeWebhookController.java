@@ -30,6 +30,7 @@ public class StripeWebhookController {
     @PostMapping("/webhook")
     public ResponseEntity<String> handleStripeWebhook(@RequestBody String payload,
                                                       @RequestHeader("Stripe-Signature") String sigHeader) {
+        log.info("Start handleStripeWebhook payload {} ", payload);
         Event event;
 
         try {
@@ -55,6 +56,8 @@ public class StripeWebhookController {
 
                 log.info("Booking {} updated to CONFIRMED", bookingReference);
             }
+        }else {
+            log.error("Webhook signature verification failed. {}",payload);
         }
 
         return ResponseEntity.ok("Webhook received");
