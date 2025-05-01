@@ -32,7 +32,7 @@ public class JwtServiceImp implements JwtService {
     private final PermissionRepository permissionRepository;
 
     @Value("${app.jwt-secret}")
-    private static final String SECRET = "b2FpU0hyU2RKNnJ2OUU5VHdGTWNUV2ZpVVpXbU10V1l1QlFuUXdXRA=="; // Valid
+    private String SECRET; // Valid
 
 
     @Override
