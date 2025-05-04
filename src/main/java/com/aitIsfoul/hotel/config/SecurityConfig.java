@@ -45,8 +45,8 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        //.requestMatchers("/login", "/refresh-token").permitAll()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/login", "/refresh-token","/customer/add").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(seas -> seas.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)

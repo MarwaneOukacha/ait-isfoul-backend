@@ -17,7 +17,9 @@ public interface RoomRepository extends JpaRepository<Room, UUID> , JpaSpecifica
     default Page<Room> findAllWithCriteria(SearchRoomDTO criteria, Pageable pageable) {
         return findAll((Specification<Room>) (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-
+            if (criteria.getHotelRef() != null) {
+                predicates.add(cb.equal(root.get("hotel").get("hotelIden"), criteria.getHotelRef()));
+            }
             if (criteria.getKeyword() != null && !criteria.getKeyword().isBlank()) {
                 String pattern = "%" + criteria.getKeyword().toLowerCase() + "%";
                 predicates.add(cb.or(

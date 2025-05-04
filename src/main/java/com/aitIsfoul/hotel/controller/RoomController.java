@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @Slf4j
 @RequestMapping("/rooms")
@@ -43,6 +45,33 @@ public class RoomController {
                 .maxPeople(maxPeople)
                 .maxPrice(maxPrice)
                 .minPrice(minPrice)
+                .build();
+
+        GenericPage<SearchRoomResponseDTO> rooms = roomService.getRooms(searchRoomDTO, pageable);
+
+        log.info("Returning {} rooms.", rooms.getContent().size());
+
+        return ResponseEntity.ok(rooms);
+    }
+    @GetMapping("/search/hotel")
+    public ResponseEntity<GenericPage<SearchRoomResponseDTO>> getRoomsByHotel(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) RoomStatus roomStatus,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) Integer maxPeople,
+            Pageable pageable,@RequestParam(required = true) String hotelRef) {
+
+        log.info("Received request to search rooms with keyword: {}, roomStatus: {}, price between {} and {}, maxPeople: {}",
+                keyword, roomStatus, minPrice, maxPrice, maxPeople);
+
+        SearchRoomDTO searchRoomDTO = SearchRoomDTO.builder()
+                .roomStatus(roomStatus)
+                .keyword(keyword)
+                .maxPeople(maxPeople)
+                .maxPrice(maxPrice)
+                .minPrice(minPrice)
+                .hotelRef(hotelRef)
                 .build();
 
         GenericPage<SearchRoomResponseDTO> rooms = roomService.getRooms(searchRoomDTO, pageable);
