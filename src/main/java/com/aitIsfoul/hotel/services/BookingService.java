@@ -19,5 +19,4 @@ public interface BookingService {
     Booking getBookingByRef(String bookingRef);
 
     GenericPage<SearchBookingResponseDTO> searchBookings(SearchBookingRequestDTO searchBookingRequestDTO,Pageable pageable);
-
 }

@@ -30,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
         Page<Customer> customers = customerDao.searchCustomer(searchCustomerRequest, pageable);
         Page<SearchCustomerResponse> searchCustomerResponses = customerMapper.userPageToSearchUserResponsePage(customers);
         log.info("CustomerDao search response inside CustomerServiceImpl: {}", customers.getContent());
-        return new GenericPage<>(searchCustomerResponses,searchCustomerResponses.getTotalElements());
+        return new GenericPage<>(searchCustomerResponses);
     }
 
     @Override

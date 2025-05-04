@@ -44,6 +44,7 @@ public class HotelDaoImp implements HotelDao {
         Hotel hotel = hotelMapper.addHotelRequestDtoToHotel(addHotelRequestDTO);
         String hotelCode = Utils.generateHotelCode(hotel);
         hotel.setOwner(userById);
+        hotel.setIsActive("Y");
         hotel.setHotelIden(hotelCode);
 
         if (hotel.getImages() != null) {

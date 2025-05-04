@@ -46,6 +46,6 @@ public class UserServiceImpl implements UserService {
         Page<User> users = userDao.findAllWithCriteria(criteria, pageable);
         Page<SearchUserResponse> searchUserResponses = userMapper.userPageToSearchUserResponsePage(users);
 
-        return new GenericPage<>(searchUserResponses,searchUserResponses.getTotalElements());
+        return new GenericPage<>(searchUserResponses);
     }
 }

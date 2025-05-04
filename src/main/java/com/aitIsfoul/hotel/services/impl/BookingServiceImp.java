@@ -74,6 +74,7 @@ public class BookingServiceImp implements BookingService {
         booking.setFirstName(bookingRequest.getFirstName());
         booking.setPhoneNumber(bookingRequest.getPhoneNumber());
         booking.setEmail(bookingRequest.getEmail());
+        booking.setIsActive("Y");
         booking = bookingDao.save(booking);
         log.info("Booking saved: Reference = {}", booking.getBookingReference());
 
@@ -118,7 +119,9 @@ public class BookingServiceImp implements BookingService {
 
         log.info("Mapped booking entities to booking response DTOs");
 
-        return new GenericPage<>(searchBookingResponseDTOS, searchBookingResponseDTOS.getTotalElements());
+        return new GenericPage<>(searchBookingResponseDTOS);
     }
+
+
 
 }

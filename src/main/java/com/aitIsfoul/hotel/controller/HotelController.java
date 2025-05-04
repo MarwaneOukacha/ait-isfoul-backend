@@ -34,7 +34,7 @@ public class HotelController {
         SearchHotelCriteriaDTO searchHotelCriteriaDTO=new SearchHotelCriteriaDTO(keyword,stars,ownerIden);
         log.info("HotelController :: searchHotels {}", searchHotelCriteriaDTO);
         GenericPage<SearchHotelResponseDTO> allHotels = hotelService.getAllHotels(searchHotelCriteriaDTO, pageable);
-        log.info("Search users response {}", allHotels.getPage().getContent());
+        log.info("Search users response {}", allHotels.getContent());
         return ResponseEntity.ok(allHotels);
     }
 

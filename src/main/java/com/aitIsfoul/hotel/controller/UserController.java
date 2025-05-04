@@ -34,7 +34,7 @@ public class UserController {
         log.info("Search users request");
         SearchUserCriteria criteria=new SearchUserCriteria(keyword, roleName, status, type);
         GenericPage<SearchUserResponse> users = userService.getAllUsers(criteria, pageable);
-        log.info("Search users response {}", users.getPage().getContent());
+        log.info("Search users response {}", users.getContent());
         return ResponseEntity.ok(users);
     }
 

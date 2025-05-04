@@ -11,5 +11,7 @@ public class SearchBookingRequestDTO {
     private String checkIn;
     private String checkOut;
     private BookingStatus status;
+    private String customerEmail;
+    private String hotelRef;
 }
 

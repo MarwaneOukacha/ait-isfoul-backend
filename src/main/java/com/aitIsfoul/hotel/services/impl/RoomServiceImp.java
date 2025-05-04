@@ -44,7 +44,7 @@ public class RoomServiceImp implements RoomService {
 
         log.info("Found {} rooms matching the criteria.", allWithCriteria.getTotalElements());
 
-        return new GenericPage<>(searchRoomResponseDTOS, pageable);
+        return new GenericPage<>(searchRoomResponseDTOS);
     }
 
     @Override

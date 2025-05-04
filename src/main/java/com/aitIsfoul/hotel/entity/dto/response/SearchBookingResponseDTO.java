@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SearchBookingResponseDTO {
     private String bookingReference;
-    private Room room;
-    private Customer client;
+    private SearchRoomResponseDTO room;
+    private SearchCustomerResponse customer;
     private String checkIn;
     private String checkOut;
     private BookingStatus status;

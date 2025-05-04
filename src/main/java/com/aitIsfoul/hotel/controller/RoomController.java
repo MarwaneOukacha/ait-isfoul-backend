@@ -47,7 +47,7 @@ public class RoomController {
 
         GenericPage<SearchRoomResponseDTO> rooms = roomService.getRooms(searchRoomDTO, pageable);
 
-        log.info("Returning {} rooms.", rooms.getPage().getContent().size());
+        log.info("Returning {} rooms.", rooms.getContent().size());
 
         return ResponseEntity.ok(rooms);
     }

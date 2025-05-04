@@ -17,5 +17,4 @@ public interface BookingDao {
     Page<Booking> searchBookings(SearchBookingRequestDTO criteria, Pageable pageable);
 
 
-
 }

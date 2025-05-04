@@ -13,17 +13,17 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     // Handle all uncaught exceptions
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleAllExceptions(Exception ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put("error", "Internal Server Error");
-        body.put("message", ex.getMessage());
-        body.put("path", ""); // You can fill this dynamically if needed (like from HttpServletRequest)
-
-        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<Object> handleAllExceptions(Exception ex) {
+//        Map<String, Object> body = new HashMap<>();
+//        body.put("timestamp", LocalDateTime.now());
+//        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+//        body.put("error", "Internal Server Error");
+//        body.put("message", ex.getMessage());
+//        body.put("path", ""); // You can fill this dynamically if needed (like from HttpServletRequest)
+//
+//        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
     // Handle IllegalArgumentExceptions (example)
     @ExceptionHandler(IllegalArgumentException.class)

@@ -20,6 +20,7 @@ public interface BookingMapper {
     BookingResponseDTO toBookingResponseDTO(Booking booking);
 
     SearchBookingResponseDTO toSearchBookingResponseDTO(Booking booking);
+
     default Page<SearchBookingResponseDTO> bookingsPageTobookingsResponsePage(Page<Booking> bookingPage) {
         return bookingPage.map(this::toSearchBookingResponseDTO);
     }

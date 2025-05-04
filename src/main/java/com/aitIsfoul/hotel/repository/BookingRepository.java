@@ -40,7 +40,12 @@ public interface BookingRepository extends JpaRepository<Booking, UUID>, JpaSpec
     default Page<Booking> findAllWithCriteria(SearchBookingRequestDTO criteria, Pageable pageable) {
         return this.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-
+            if(criteria.getCustomerEmail()!= null) {
+                predicates.add(cb.equal(root.get("customer").get("email"), criteria.getCustomerEmail()));
+            }
+            if(criteria.getHotelRef()!= null) {
+                predicates.add(cb.equal(root.get("room").get("hotel").get("hotelIden"), criteria.getHotelRef()));
+            }
             if (criteria.getCheckIn() != null) {
                 predicates.add(cb.greaterThanOrEqualTo(root.get("checkIn"), LocalDate.parse(criteria.getCheckIn())));
             }

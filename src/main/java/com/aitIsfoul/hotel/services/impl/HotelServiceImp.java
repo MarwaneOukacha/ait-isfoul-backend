@@ -55,7 +55,7 @@ public class HotelServiceImp implements HotelService {
         log.info("HotelServiceImpl :: getAllHotels -Request received: {}", searchHotelCriteriaDTO);
         Page<Hotel> hotels = hotelDao.findAllWithCriteria(searchHotelCriteriaDTO, pageable);
         Page<SearchHotelResponseDTO> searchHotelResponseDTOS = hotelMapper.hotelPageToSearchHotelResponseDTO(hotels);
-        return new GenericPage<>(searchHotelResponseDTOS,searchHotelResponseDTOS.getTotalElements());
+        return new GenericPage<>(searchHotelResponseDTOS);
     }
 
 }

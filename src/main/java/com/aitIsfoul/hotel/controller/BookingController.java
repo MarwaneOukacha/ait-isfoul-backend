@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/bookings")
 @Slf4j
@@ -52,5 +54,32 @@ public class BookingController {
     public BookingResponseDTO getBooking(@RequestParam String ref){
         return bookingService.getBookingResponseDtoByRef(ref);
     }
-
+    @GetMapping("/myBookings")
+    public ResponseEntity<GenericPage<SearchBookingResponseDTO>> searchMyBookings(@RequestParam(required = false) String keyword,
+                                                                                  @RequestParam(required = false) BookingStatus status,
+                                                                                  @RequestParam(required = false) String checkIn, @RequestParam(required = false) String checkOut, Principal principal
+            , Pageable pageable){
+        SearchBookingRequestDTO searchBookingRequestDTO=SearchBookingRequestDTO
+                .builder()
+                .checkIn(checkIn)
+                .checkOut(checkOut)
+                .status(status)
+                .customerEmail(principal.getName())
+                .build();
+        return ResponseEntity.ok(bookingService.searchBookings(searchBookingRequestDTO,pageable));
+    }
+    @GetMapping("/hotel/{hotelRef}")
+    public ResponseEntity<GenericPage<SearchBookingResponseDTO>> searchBookingsByHotelRef(@RequestParam(required = false) String keyword,
+                                                                                  @RequestParam(required = false) BookingStatus status,
+                                                                                  @RequestParam(required = false) String checkIn, @RequestParam(required = false) String checkOut, String hotelRef
+            , Pageable pageable){
+        SearchBookingRequestDTO searchBookingRequestDTO=SearchBookingRequestDTO
+                .builder()
+                .checkIn(checkIn)
+                .checkOut(checkOut)
+                .status(status)
+                .hotelRef(hotelRef)
+                .build();
+        return ResponseEntity.ok(bookingService.searchBookings(searchBookingRequestDTO,pageable));
+    }
 }
