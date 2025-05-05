@@ -45,7 +45,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/refresh-token","/customer/add").permitAll()
+                        .requestMatchers("/login", "/refresh-token","/customers/add").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(seas -> seas.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
