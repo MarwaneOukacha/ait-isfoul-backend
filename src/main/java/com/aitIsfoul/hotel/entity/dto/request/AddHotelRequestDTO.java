@@ -32,5 +32,4 @@ public class AddHotelRequestDTO {
 
     @NotNull(message = "Owner ID is required")
     private String ownerId;
-    private List<RoomImageDTO> images;
 }

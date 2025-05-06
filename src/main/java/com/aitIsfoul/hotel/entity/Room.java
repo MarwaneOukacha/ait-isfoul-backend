@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,4 +32,6 @@ public class Room extends AbstractEntity {
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
     private String size;
+    /*@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoomImage> images;*/
 }

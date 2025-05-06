@@ -47,9 +47,6 @@ public class HotelDaoImp implements HotelDao {
         hotel.setIsActive("Y");
         hotel.setHotelIden(hotelCode);
 
-        if (hotel.getImages() != null) {
-            hotel.getImages().forEach(img -> img.setHotel(hotel));
-        }
 
         return hotelRepository.save(hotel);
     }

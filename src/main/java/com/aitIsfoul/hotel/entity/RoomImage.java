@@ -18,6 +18,6 @@ public class RoomImage extends AbstractEntity {
     private byte[] data;
 
     @ManyToOne
-    @JoinColumn(name = "hotel_id", nullable = false)
-    private Hotel hotel;
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
 }

@@ -3,6 +3,7 @@ package com.aitIsfoul.hotel.entity.dto.response;
 import com.aitIsfoul.hotel.entity.dto.LocationDTO;
 import com.aitIsfoul.hotel.entity.User;
 import com.aitIsfoul.hotel.entity.dto.RoomImageDTO;
+import com.aitIsfoul.hotel.entity.dto.UserDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ public class AddHotelResponseDTO {
     private String name;
     private LocationDTO location;
     private int stars;
-    private User owner;
+    private UserDto owner;
     private List<RoomImageDTO> images;
     private LocalDateTime created;
     private String hotelIden;

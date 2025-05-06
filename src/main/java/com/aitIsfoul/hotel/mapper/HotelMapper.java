@@ -21,7 +21,6 @@ public interface HotelMapper {
 
     // DTO → Entity
     @Mapping(target = "owner", ignore = true)
-    @Mapping(target = "images", source = "images")
     Hotel addHotelRequestDtoToHotel(AddHotelRequestDTO dto);
 
     SearchHotelResponseDTO searchHotelResponsedtoToHotel(Hotel hotel);
@@ -34,15 +33,15 @@ public interface HotelMapper {
     default Page<SearchHotelResponseDTO> hotelPageToSearchHotelResponseDTO(Page<Hotel> hotels) {
         return hotels.map(this::searchHotelResponsedtoToHotel);
     }
-    @Mapping(target = "hotel", ignore = true)
+    /*@Mapping(target = "hotel", ignore = true)
     @Mapping(target = "data", source = "data", qualifiedByName = "base64ToBytes")
-    RoomImage toRoomImage(RoomImageDTO dto);
+    RoomImage toRoomImage(RoomImageDTO dto);*/
 
     @Mapping(target = "data", source = "data", qualifiedByName = "bytesToBase64")
     RoomImageDTO toRoomImageDTO(RoomImage image);
 
-    List<RoomImage> toRoomImageList(List<RoomImageDTO> dtos);
-    List<RoomImageDTO> toRoomImageDTOList(List<RoomImage> images);
+    //List<RoomImage> toRoomImageList(List<RoomImageDTO> dtos);
+    //List<RoomImageDTO> toRoomImageDTOList(List<RoomImage> images);
 
     @Named("base64ToBytes")
     static byte[] mapBase64ToBytes(String base64) {
@@ -54,12 +53,7 @@ public interface HotelMapper {
         return data != null ? Base64.getEncoder().encodeToString(data) : null;
     }
 
-    @AfterMapping
-    default void linkImages(@MappingTarget Hotel hotel) {
-        if (hotel.getImages() != null) {
-            hotel.getImages().forEach(image -> image.setHotel(hotel));
-        }
-    }
+
 
     // Entity to Update DTO
     UpdateHotelResponseDTO hotelToUpdateHotelRequestDTO(Hotel hotel);
