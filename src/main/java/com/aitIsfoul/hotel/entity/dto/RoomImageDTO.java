@@ -9,6 +9,4 @@ import lombok.Setter;
 @Builder
 public class RoomImageDTO {
     private String name;
-    private String type;
-    private String data; // base64 string
 }

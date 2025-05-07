@@ -1,11 +1,13 @@
 package com.aitIsfoul.hotel.entity.dto.response;
 
 import com.aitIsfoul.hotel.entity.User;
+import com.aitIsfoul.hotel.entity.dto.RoomImageDTO;
 import com.aitIsfoul.hotel.enums.RoomStatus;
 import com.aitIsfoul.hotel.enums.RoomType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 @Data
 public class AddRoomResponseDTO {
@@ -19,4 +21,5 @@ public class AddRoomResponseDTO {
     private RoomStatus roomStatus;
     private LocalDateTime created;
     private User createdBy;
+    private List<RoomImageDTO> images;
 }

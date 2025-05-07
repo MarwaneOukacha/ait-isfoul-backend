@@ -12,11 +12,6 @@ import lombok.*;
 public class RoomImage extends AbstractEntity {
 
     private String name;
-    private String type;
-
-    @Lob
-    private byte[] data;
-
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;

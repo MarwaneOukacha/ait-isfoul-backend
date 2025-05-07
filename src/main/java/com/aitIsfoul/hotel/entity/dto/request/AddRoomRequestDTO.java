@@ -39,4 +39,6 @@ public class AddRoomRequestDTO {
     private String hotelIden;
     @NotBlank(message = "Size is required")
     private String size;
+    //@NotBlank(message = "Images are required")
+    private List<RoomImageDTO> images;
 }

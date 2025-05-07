@@ -37,8 +37,8 @@ public interface HotelMapper {
     @Mapping(target = "data", source = "data", qualifiedByName = "base64ToBytes")
     RoomImage toRoomImage(RoomImageDTO dto);*/
 
-    @Mapping(target = "data", source = "data", qualifiedByName = "bytesToBase64")
-    RoomImageDTO toRoomImageDTO(RoomImage image);
+    /*@Mapping(target = "data", source = "data", qualifiedByName = "bytesToBase64")
+    RoomImageDTO toRoomImageDTO(RoomImage image);*/
 
     //List<RoomImage> toRoomImageList(List<RoomImageDTO> dtos);
     //List<RoomImageDTO> toRoomImageDTOList(List<RoomImage> images);

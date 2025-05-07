@@ -4,11 +4,13 @@ import com.aitIsfoul.hotel.dao.HotelDao;
 import com.aitIsfoul.hotel.dao.RoomDao;
 import com.aitIsfoul.hotel.entity.Hotel;
 import com.aitIsfoul.hotel.entity.Room;
+import com.aitIsfoul.hotel.entity.RoomImage;
 import com.aitIsfoul.hotel.entity.dto.SearchRoomDTO;
 import com.aitIsfoul.hotel.entity.dto.request.AddRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.CheckRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.UpdateRoomRequestDTO;
 import com.aitIsfoul.hotel.enums.RoomStatus;
+import com.aitIsfoul.hotel.mapper.RoomMapper;
 import com.aitIsfoul.hotel.repository.RoomRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,6 +32,8 @@ public class RoomDaoImp implements RoomDao {
 
     @Autowired
     private HotelDao hotelDao;
+    @Autowired
+    private RoomMapper roomMapper;
 
     @Override
     public Page<Room> findAllWithCriteria(SearchRoomDTO searchRoomDTO, Pageable pageable) {
@@ -58,7 +63,11 @@ public class RoomDaoImp implements RoomDao {
                 .roomStatus(RoomStatus.AVAILABLE) // Default: Available
                 .build();
         room.setIsActive("Y");
-
+        List<RoomImage> roomImageList = roomMapper.toRoomImageList(addRoomRequestDTO.getImages());
+        for (int i = 0; i < roomImageList.size(); i++) {
+            roomImageList.get(i).setRoom(room);
+        }
+        room.setImages(roomImageList);
         Room savedRoom = roomRepository.save(room);
         log.info("Room added successfully with ID: {}", savedRoom.getId());
 
