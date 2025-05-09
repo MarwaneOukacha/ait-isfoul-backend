@@ -53,7 +53,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/refresh-token","/customers/add","/rooms/search/hotel").permitAll()
+                        .requestMatchers("/login", "/refresh-token","/customers/add","/rooms/search/hotel","/rooms/room/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(seas -> seas.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -2,6 +2,7 @@ package com.aitIsfoul.hotel.dao.impl;
 
 import com.aitIsfoul.hotel.dao.BookingDao;
 import com.aitIsfoul.hotel.entity.Booking;
+import com.aitIsfoul.hotel.entity.Room;
 import com.aitIsfoul.hotel.entity.dto.request.SearchBookingRequestDTO;
 import com.aitIsfoul.hotel.repository.BookingRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -69,6 +70,8 @@ public class BookingDaoImp implements BookingDao {
     public Page<Booking> searchBookings(SearchBookingRequestDTO criteria, Pageable pageable) {
         return bookingRepository.findAllWithCriteria(criteria,pageable);
     }
+
+
 
 
 }

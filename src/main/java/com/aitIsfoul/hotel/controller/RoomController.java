@@ -6,6 +6,7 @@ import com.aitIsfoul.hotel.entity.dto.request.AddRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.CheckRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.UpdateRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.response.AddRoomResponseDTO;
+import com.aitIsfoul.hotel.entity.dto.response.RoomDetailResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.SearchRoomResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.UpdateRoomResponseDTO;
 import com.aitIsfoul.hotel.enums.RoomStatus;
@@ -106,5 +107,11 @@ public class RoomController {
     @GetMapping("/isRoomAvailable")
     public ResponseEntity<Boolean> checkRoomAvailibility(@RequestBody CheckRoomRequestDTO checkRoomRequestDTO){
         return ResponseEntity.ok(roomService.isRoomAvailable(checkRoomRequestDTO));
+    }
+
+    @GetMapping("/room/{id}")
+    public ResponseEntity<RoomDetailResponseDTO> getRoomDetail(@PathVariable String id){
+        log.info("Received request to get room details with id {}",id);
+        return ResponseEntity.ok(roomService.getRoomDetail(id));
     }
 }

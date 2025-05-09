@@ -1,7 +1,9 @@
 package com.aitIsfoul.hotel.dao;
 
 import com.aitIsfoul.hotel.entity.Booking;
+import com.aitIsfoul.hotel.entity.Room;
 import com.aitIsfoul.hotel.entity.dto.request.SearchBookingRequestDTO;
+import com.aitIsfoul.hotel.entity.dto.response.RoomDetailResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.SearchBookingResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +17,4 @@ public interface BookingDao {
     Booking save(Booking booking);
     Booking findByBookingReference(String reference);
     Page<Booking> searchBookings(SearchBookingRequestDTO criteria, Pageable pageable);
-
-
 }

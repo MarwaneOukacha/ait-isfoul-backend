@@ -9,6 +9,7 @@ import com.aitIsfoul.hotel.entity.dto.request.AddRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.CheckRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.UpdateRoomRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.response.AddRoomResponseDTO;
+import com.aitIsfoul.hotel.entity.dto.response.RoomDetailResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.SearchRoomResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.UpdateRoomResponseDTO;
 import com.aitIsfoul.hotel.mapper.RoomMapper;
@@ -78,6 +79,13 @@ public class RoomServiceImp implements RoomService {
         LocalDate checkOutDate = LocalDate.parse(checkRoomRequestDTO.getCheckOut());
         String roomId=checkRoomRequestDTO.getRoomId();
         return bookingDao.isRoomAvailable(roomId,checkInDate,checkOutDate);
+    }
+
+    @Override
+    public RoomDetailResponseDTO getRoomDetail(String id) {
+        log.info("Get room details with id : {}", id);
+        Room room=roomDao.findById(id);
+        return roomMapper.fromRoomToRoomDetailResponseDTO(room);
     }
 }
 

@@ -7,11 +7,8 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
-
 @Data
-public class SearchRoomResponseDTO {
-    private UUID id;
+public class RoomDetailResponseDTO {
     private String title;
     private RoomType roomType;
     private int maxPeople;
@@ -19,8 +16,6 @@ public class SearchRoomResponseDTO {
     private String description;
     private String facilitiesDesc;
     private RoomStatus roomStatus;
-    private LocalDateTime created;
-    private LocalDateTime updated;
     private List<RoomImageDTO> images;
     private String size;
 }

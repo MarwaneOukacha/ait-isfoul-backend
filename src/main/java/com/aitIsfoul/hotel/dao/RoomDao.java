@@ -16,6 +16,5 @@ public interface RoomDao {
     Room updateRoom(UpdateRoomRequestDTO updateRoom);
 
     Room findById(String roomId);
-
 }
 

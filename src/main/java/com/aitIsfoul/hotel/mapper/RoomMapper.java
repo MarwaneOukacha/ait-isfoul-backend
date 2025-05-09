@@ -4,6 +4,7 @@ import com.aitIsfoul.hotel.entity.Room;
 import com.aitIsfoul.hotel.entity.RoomImage;
 import com.aitIsfoul.hotel.entity.dto.RoomImageDTO;
 import com.aitIsfoul.hotel.entity.dto.response.AddRoomResponseDTO;
+import com.aitIsfoul.hotel.entity.dto.response.RoomDetailResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.SearchRoomResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.UpdateRoomResponseDTO;
 import org.mapstruct.Mapper;
@@ -21,4 +22,7 @@ public interface RoomMapper {
     default Page<SearchRoomResponseDTO> roomPageToSearchRoomResponseDTO(Page<Room> rooms) {
         return rooms.map(this::roomToSearchRoomResponseDTO);
     }
+
+    RoomDetailResponseDTO fromRoomToRoomDetailResponseDTO(Room room);
+
 }
