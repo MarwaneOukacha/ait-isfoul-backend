@@ -66,6 +66,7 @@ public class RoomDaoImp implements RoomDao {
         List<RoomImage> roomImageList = roomMapper.toRoomImageList(addRoomRequestDTO.getImages());
         for (int i = 0; i < roomImageList.size(); i++) {
             roomImageList.get(i).setRoom(room);
+            roomImageList.get(i).setIsActive("Y");
         }
         room.setImages(roomImageList);
         Room savedRoom = roomRepository.save(room);

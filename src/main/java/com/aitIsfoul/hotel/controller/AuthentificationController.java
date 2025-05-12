@@ -27,6 +27,17 @@ public class AuthentificationController {
             throw new RuntimeException("Mot de passe ou email incorrect");
         }
     }
+
+    @PostMapping("/customer/login")
+    public Map<String, String> AuthentificationCustomer(@RequestBody AuthentificationDTO a){
+        authenticate=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(a.getEmail(),a.getPassword()));
+        if(authenticate.isAuthenticated()){
+            return service.generateToken(a.getEmail());
+        }else {
+            throw new RuntimeException("Mot de passe ou email incorrect");
+        }
+    }
+
     @PostMapping("/refresh-token")
     public ResponseEntity<Map<String, String>> refreshToken(@RequestParam String refreshToken) {
 
