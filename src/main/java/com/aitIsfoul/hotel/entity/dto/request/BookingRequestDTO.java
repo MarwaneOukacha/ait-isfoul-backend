@@ -14,4 +14,5 @@ public class BookingRequestDTO {
     private String firstName;
     private String email;
     private String phoneNumber;
+    private Double total;
 }

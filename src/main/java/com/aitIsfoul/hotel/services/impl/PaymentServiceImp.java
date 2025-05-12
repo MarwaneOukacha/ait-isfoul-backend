@@ -13,6 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 
 @Service
 @RequiredArgsConstructor
@@ -27,18 +31,19 @@ public class PaymentServiceImp implements PaymentService {
 
     @Override
     public PaymentResponseDTO createPayment(Booking booking) {
+        long daysBetween = ChronoUnit.DAYS.between(booking.getCheckIn(), booking.getCheckOut());
         try {
             SessionCreateParams.Builder sessionBuilder = SessionCreateParams.builder()
                     .setMode(SessionCreateParams.Mode.PAYMENT)
-                    .setSuccessUrl("https://ait-isfoul-front.vercel.app/")
-                    .setCancelUrl("https://ait-isfoul-front.vercel.app/")
+                    .setSuccessUrl("http://localhost:3000/my-bookings/")
+                    .setCancelUrl("http://localhost:3000/my-bookings/s")
                     .addLineItem(
                             SessionCreateParams.LineItem.builder()
                                     .setQuantity(1L) // 1 Room booking, quantity usually 1 (you can customize if you want adults+kids)
                                     .setPriceData(
                                             SessionCreateParams.LineItem.PriceData.builder()
                                                     .setCurrency(booking.getCurrency().toLowerCase())
-                                                    .setUnitAmount((long) (booking.getRoom().getPrice() * 100)) // Stripe needs price in cents
+                                                    .setUnitAmount((long) ( booking.getTotalPrice()* 100)) // Stripe needs price in cents
                                                     .setProductData(
                                                             SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                                                     .setName(booking.getRoom().getTitle())

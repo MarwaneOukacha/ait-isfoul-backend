@@ -104,8 +104,9 @@ public class RoomController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/isRoomAvailable")
-    public ResponseEntity<Boolean> checkRoomAvailibility(@RequestBody CheckRoomRequestDTO checkRoomRequestDTO){
+    @PostMapping("/isRoomAvailable")
+    public ResponseEntity<Boolean> checkRoomAvailability(@RequestBody CheckRoomRequestDTO checkRoomRequestDTO){
+        log.info("Received request to check room Availability : {}", checkRoomRequestDTO);
         return ResponseEntity.ok(roomService.isRoomAvailable(checkRoomRequestDTO));
     }
 

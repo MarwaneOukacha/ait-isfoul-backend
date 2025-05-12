@@ -35,6 +35,8 @@ public class Booking extends AbstractEntity {
     private String firstName;
     private String email;
     private String phoneNumber;
+    private Double total;
+    private Double totalPrice;
 }
 
 

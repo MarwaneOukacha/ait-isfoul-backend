@@ -1,7 +1,9 @@
 package com.aitIsfoul.hotel.config;
 
+import com.aitIsfoul.hotel.entity.Customer;
 import com.aitIsfoul.hotel.entity.Permission;
 import com.aitIsfoul.hotel.entity.User;
+import com.aitIsfoul.hotel.repository.CustomerRepository;
 import com.aitIsfoul.hotel.repository.PermissionRepository;
 import com.aitIsfoul.hotel.repository.UserRepository;
 import com.aitIsfoul.hotel.utils.JwtAuthenticationFilter;
@@ -34,10 +36,7 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -48,12 +47,13 @@ public class SecurityConfig {
 
     private final PermissionRepository permissionRepository;
     private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/refresh-token","/customers/add","/rooms/search/hotel","/rooms/room/**").permitAll()
+                        .requestMatchers("/login", "/refresh-token","/customers/add","/rooms/search/hotel","/rooms/room/**","/rooms/isRoomAvailable","/customers/add").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(seas -> seas.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -85,7 +85,7 @@ public class SecurityConfig {
 
                 // Fetch the user by username
                 Optional<User> userOptional = userRepository.findByEmail(username);
-
+                Optional<Customer> customer = customerRepository.findByEmail(username);
                 if (userOptional.isPresent()) {
                     User user = userOptional.get();
                     log.info("User found with username: {}", username);
@@ -107,6 +107,16 @@ public class SecurityConfig {
                             user.getEmail(),
                             user.getPassword(),
                             authorities
+                    );
+                } else if (customer.isPresent()) {
+                    Customer cus = customer.get();
+                    log.info("Customer found with username: {}", username);
+
+                    // Return Spring Security's User object with username, password, and authorities
+                    return new org.springframework.security.core.userdetails.User(
+                            cus.getEmail(),
+                            cus.getPassword(),
+                            new ArrayList<>()
                     );
                 } else {
                     log.warn("User not found with username: {}", username);

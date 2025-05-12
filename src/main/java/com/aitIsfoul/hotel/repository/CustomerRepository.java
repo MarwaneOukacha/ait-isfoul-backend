@@ -20,7 +20,7 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> , JpaS
 
 
     Optional<Customer> findByIden(String iden);
-
+    Optional<Customer> findByEmail(String email);
     default Page<Customer> findAllWithCriteria(SearchCustomerRequest criteria, Pageable pageable) {
         return findAll((Specification<Customer>) (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();

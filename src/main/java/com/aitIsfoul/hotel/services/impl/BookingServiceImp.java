@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +61,7 @@ public class BookingServiceImp implements BookingService {
 
         Customer customer = customerDao.findById(bookingRequest.getCustomerId());
         log.debug("Customer retrieved: ID = {}, Email = {}", customer.getId(), customer.getEmail());
-
+        long daysBetween = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
         Booking booking = new Booking();
         booking.setRoom(room);
         booking.setCustomer(customer);
@@ -68,12 +69,14 @@ public class BookingServiceImp implements BookingService {
         booking.setCheckOut(checkOutDate);
         booking.setAdultsCount(bookingRequest.getAdultsCount());
         booking.setKidsCount(bookingRequest.getKidsCount());
+        booking.setTotal(bookingRequest.getTotal());
         booking.setCurrency(bookingRequest.getCurrency());
         booking.setStatus(BookingStatus.PENDING_PAYMENT);
         booking.setBookingReference(Utils.generateBookingCode());
         booking.setFirstName(bookingRequest.getFirstName());
         booking.setPhoneNumber(bookingRequest.getPhoneNumber());
         booking.setEmail(bookingRequest.getEmail());
+        booking.setTotalPrice(daysBetween * booking.getRoom().getPrice());
         booking.setIsActive("Y");
         booking = bookingDao.save(booking);
         log.info("Booking saved: Reference = {}", booking.getBookingReference());
