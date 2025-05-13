@@ -13,4 +13,6 @@ public class SearchRoomDTO {
    private Double maxPrice;
    private Integer maxPeople;
    private String hotelRef;
+   private String checkIn;
+   private String checkOut;
 }

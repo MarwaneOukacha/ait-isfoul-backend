@@ -68,7 +68,7 @@ public interface BookingRepository extends JpaRepository<Booking, UUID>, JpaSpec
 
                 predicates.add(cb.or(bookingRefPredicate, clientNamePredicate, roomNamePredicate));
             }
-
+            query.orderBy(cb.desc(root.get("created")));
             return cb.and(predicates.toArray(new Predicate[0]));
         }, pageable);
     }

@@ -58,6 +58,8 @@ public class RoomController {
     public ResponseEntity<GenericPage<SearchRoomResponseDTO>> getRoomsByHotel(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) RoomStatus roomStatus,
+            @RequestParam(required = false) String checkIn,
+            @RequestParam(required = false) String checkOut,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(required = false) Integer maxPeople,
@@ -72,6 +74,8 @@ public class RoomController {
                 .maxPeople(maxPeople)
                 .maxPrice(maxPrice)
                 .minPrice(minPrice)
+                .checkIn(checkIn)
+                .checkOut(checkOut)
                 .hotelRef(hotelRef)
                 .build();
 

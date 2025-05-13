@@ -52,6 +52,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors().and()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/refresh-token","/customers/add","/rooms/search/hotel","/rooms/room/**","/rooms/isRoomAvailable","/customers/add").permitAll()
                         .anyRequest().authenticated()

@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,4 +19,5 @@ public class SearchBookingResponseDTO {
     private String checkIn;
     private String checkOut;
     private BookingStatus status;
+    private Date created;
 }
