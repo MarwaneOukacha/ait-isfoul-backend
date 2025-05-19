@@ -51,6 +51,9 @@ public class JwtServiceImp implements JwtService {
 
             claims.put("email", user.getEmail());
             claims.put("userID", user.getId());
+            claims.put("firstName", user.getFirstName());
+            claims.put("lastName", user.getLastName());
+            claims.put("phoneNumber", user.getPhoneNumber());
             claims.put("userIden", user.getIden());
             claims.put("role", role.getRoleName());
             claims.put("permissions", permissionNames);
@@ -67,6 +70,7 @@ public class JwtServiceImp implements JwtService {
             claims.put("email", customer.getEmail());
             claims.put("customerID", customer.getId());
             claims.put("FirstName", customer.getFirstName());
+            claims.put("phoneNumber", customer.getPhoneNumber());
             claims.put("LastName", customer.getLastName());
             claims.put("role", "CUSTOMER");
 
