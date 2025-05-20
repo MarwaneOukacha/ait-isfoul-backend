@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors().and()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/refresh-token","/customers/add","/rooms/search/hotel","/rooms/room/**","/rooms/isRoomAvailable","/customers/add").permitAll()
+                        .requestMatchers("/login", "/refresh-token","/customers/add","/rooms/search/hotel","/rooms/room/**","/rooms/isRoomAvailable","/customers/add","/email/contact").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(seas -> seas.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -139,6 +139,9 @@ public class SecurityConfig {
         return null;
     }
 
+
+
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -146,7 +149,7 @@ public class SecurityConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // apply to all endpoints
                         .allowedOrigins("http://localhost:3000") // your frontend URL
-                        .allowedMethods("GET", "POST", "PUT", "OPTIONS")
+                        .allowedMethods("GET", "POST", "PUT","PATCH", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }

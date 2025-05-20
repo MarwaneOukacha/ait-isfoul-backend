@@ -2,6 +2,7 @@ package com.aitIsfoul.hotel.enums;
 public enum BookingSubject {
 
     BOOKING_CONFIRMATION("Booking Confirmation"),
+    BOOKING_PENDING("Pending Booking"),
     BOOKING_FAILED("Booking Failed"),
     ROOM_UNAVAILABLE("Room Unavailable"),
     PAYMENT_CONFIRMATION("Payment Confirmation"),

@@ -1,19 +1,18 @@
 package com.aitIsfoul.hotel.controller;
 
 import com.aitIsfoul.hotel.entity.Booking;
+import com.aitIsfoul.hotel.entity.dto.ContactRequest;
 import com.aitIsfoul.hotel.entity.dto.response.BookingResponseDTO;
 import com.aitIsfoul.hotel.enums.BookingMessage;
 import com.aitIsfoul.hotel.enums.BookingSubject;
 import com.aitIsfoul.hotel.services.BookingService;
 import com.aitIsfoul.hotel.services.EmailService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/email")
@@ -38,7 +37,6 @@ public class EmailController {
             log.info("Booking found. Sending confirmation email to: {}", booking.getCustomer().getEmail());
 
             emailService.sendBookingConfirmation(
-                    booking.getEmail(),
                     BookingSubject.BOOKING_CONFIRMATION.getSubject(),
                     BookingMessage.NOTIFICATION_EMAIL_SENT.getMessage(),
                     booking
@@ -51,6 +49,18 @@ public class EmailController {
             log.error("Failed to send booking email for bookingRef: {} - {}", bookingRef, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to send booking email: " + e.getMessage());
+        }
+    }
+    @PostMapping("/contact")
+    public ResponseEntity<String> sendContactMessage(@Valid @RequestBody ContactRequest request) {
+        log.info("Received contact message from: {}", request);
+        try {
+            emailService.sendContactEmail(request);
+            return ResponseEntity.ok("Contact message sent successfully");
+        } catch (Exception e) {
+            log.error("Failed to send contact message: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to send contact message");
         }
     }
 }

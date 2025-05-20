@@ -13,6 +13,7 @@ import com.aitIsfoul.hotel.entity.dto.response.BookingResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.PaymentResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.SearchBookingResponseDTO;
 import com.aitIsfoul.hotel.enums.BookingStatus;
+import com.aitIsfoul.hotel.enums.BookingSubject;
 import com.aitIsfoul.hotel.mapper.BookingMapper;
 import com.aitIsfoul.hotel.services.BookingService;
 import com.aitIsfoul.hotel.services.EmailService;
@@ -86,7 +87,7 @@ public class BookingServiceImp implements BookingService {
 
         BookingResponseDTO response = bookingMapper.toBookingResponseDTO(booking);
         response.setCheckoutUrl(paymentResponse.getPaymentUrl());
-
+        emailService.sendPaymentPendingEmail(BookingSubject.BOOKING_PENDING.getSubject(),booking);
         log.info("Booking creation process completed for bookingRef: {}", booking.getBookingReference());
         return response;
     }

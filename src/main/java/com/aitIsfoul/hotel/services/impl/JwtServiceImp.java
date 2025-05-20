@@ -72,6 +72,7 @@ public class JwtServiceImp implements JwtService {
             claims.put("FirstName", customer.getFirstName());
             claims.put("phoneNumber", customer.getPhoneNumber());
             claims.put("LastName", customer.getLastName());
+            claims.put("Iden", customer.getIden());
             claims.put("role", "CUSTOMER");
 
         }
