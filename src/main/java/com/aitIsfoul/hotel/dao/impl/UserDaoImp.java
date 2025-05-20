@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -102,5 +103,15 @@ public class UserDaoImp implements UserDao {
         return userRepository.findById(UUID.fromString(ownerId)).orElseThrow(
                 () -> new EntityNotFoundException("User not found with id: " + ownerId)
         );
+    }
+
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
     }
 }

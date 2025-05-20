@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface UserDao {
 
     User addUser(AddUserRequest addUserRequest);
@@ -18,4 +20,8 @@ public interface UserDao {
     Page<User> findAllWithCriteria(SearchUserCriteria criteria, Pageable pageable);
 
     User getUserById(String ownerId);
+    Optional<User> getUserByEmail(String email);
+
+    void save(User user);
+
 }

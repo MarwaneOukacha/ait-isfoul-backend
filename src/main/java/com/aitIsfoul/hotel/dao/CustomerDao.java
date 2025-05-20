@@ -19,4 +19,8 @@ public interface CustomerDao {
 
     Customer findById(String clientId);
 
+    Customer findByEmail(String email);
+
+    void save(Customer customer);
+
 }
