@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors().and()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/refresh-token","/customers/add","/rooms/search/hotel","/rooms/room/**","/rooms/isRoomAvailable","/customers/add","/email/contact").permitAll()
+                        .requestMatchers("/login","/verify-otp", "/refresh-token","/customers/add","/rooms/search/hotel","/rooms/room/**","/rooms/isRoomAvailable","/customers/add","/email/contact").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(seas -> seas.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -148,7 +148,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // apply to all endpoints
-                        .allowedOrigins("http://188.34.188.31:8080") // your frontend URL
+                        .allowedOrigins("http://188.34.188.31:8080","http://localhost:3000") // your frontend URL
                         .allowedMethods("GET", "POST", "PUT","PATCH", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

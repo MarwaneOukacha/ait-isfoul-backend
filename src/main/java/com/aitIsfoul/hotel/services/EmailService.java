@@ -8,4 +8,7 @@ public interface EmailService {
     void sendBookingConfirmation(String subject, String message, Booking booking);
     void sendPaymentPendingEmail(String subject, Booking booking);
     void sendContactEmail(ContactRequest request);
+
+    void sendOtp(String email, String otp);
+
 }

@@ -200,5 +200,37 @@ public class EmailServiceImp implements EmailService {
         }
     }
 
+    @Override
+    public void sendOtp(String email, String otp) {
+        String subject = "Your OTP Code";
+
+        String plainText = "Hello,\n\nYour OTP code is: " + otp + "\n\n"
+                + "Please use this code to complete your verification. It is valid for the next 5 minutes.\n\n"
+                + "If you did not request this, please ignore this email.\n\n"
+                + "Thank you,\nHotel Team";
+
+        String html = "<html><body>"
+                + "<h2>Your OTP Code</h2>"
+                + "<p>Hello,</p>"
+                + "<p>Your OTP code is: <strong style='font-size: 18px; color: #dc2626;'>" + otp + "</strong></p>"
+                + "<p>Please use this code to complete your verification. It is valid for the next 5 minutes.</p>"
+                + "<p>If you did not request this, please ignore this email.</p>"
+                + "<br/>"
+                + "<p>Thank you,<br/>Hotel Team</p>"
+                + "</body></html>";
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom("noreply@yourdomain.com", "Hotel");
+            helper.setTo(email);
+            helper.setSubject(subject);
+            helper.setText(plainText, html);
+            mailSender.send(message);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException("Failed to send OTP email", e);
+        }
+    }
+
 
 }
