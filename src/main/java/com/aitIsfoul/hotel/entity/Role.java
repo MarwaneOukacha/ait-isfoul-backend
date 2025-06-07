@@ -2,10 +2,7 @@ package com.aitIsfoul.hotel.entity;
 
 import com.aitIsfoul.hotel.enums.RoleType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @AttributeOverride(name = "id", column = @Column(name = "role_id"))
+@ToString
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -3,10 +3,12 @@ package com.aitIsfoul.hotel.entity.dto.request;
 import com.aitIsfoul.hotel.enums.UserStatus;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.UUID;
 
 @Data
+@ToString
 public class UpdateUserRequest {
     private String id;
     private String iden;

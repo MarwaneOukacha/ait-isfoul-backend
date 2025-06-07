@@ -9,11 +9,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @AttributeOverride(name = "id", column = @Column(name = "payment_id"))
+@ToString
 public class Payment extends AbstractEntity {
 
     @ManyToOne

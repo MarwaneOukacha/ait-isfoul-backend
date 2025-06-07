@@ -3,12 +3,14 @@ package com.aitIsfoul.hotel.entity.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 @Getter
 @Setter
+@ToString
 public class GenericPage<T> {
     private List<T> content;
     private int pageNumber;

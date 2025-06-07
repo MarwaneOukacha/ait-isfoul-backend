@@ -2,6 +2,7 @@ package com.aitIsfoul.hotel.services.impl;
 
 import com.aitIsfoul.hotel.entity.Booking;
 import com.aitIsfoul.hotel.entity.dto.ContactRequest;
+import com.aitIsfoul.hotel.enums.BookingSubject;
 import com.aitIsfoul.hotel.services.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -231,6 +232,65 @@ public class EmailServiceImp implements EmailService {
             throw new RuntimeException("Failed to send OTP email", e);
         }
     }
+
+    @Override
+    public void notifyHotelOwner(BookingSubject bookingSubject, Booking booking) {
+        long daysBetween = ChronoUnit.DAYS.between(booking.getCheckIn(), booking.getCheckOut());
+        String hotelOwnerEmail = booking.getRoom().getHotel().getOwner().getEmail(); // Assumes you have this field
+
+        String subject = "New Booking Received: " + booking.getBookingReference();
+
+        String plainText = "Dear " + booking.getRoom().getHotel().getName() + " Hotel Owner,\n\n"
+                + "You have received a new booking.\n\n"
+                + "Booking Reference: " + booking.getBookingReference() + "\n"
+                + "Customer: " + booking.getFirstName() + "\n"
+                + "Email: " + booking.getEmail() + "\n"
+                + "Phone: " + booking.getPhoneNumber() + "\n"
+                + "Room Type: " + booking.getRoom().getRoomType() + "\n"
+                + "Check-in: " + booking.getCheckIn() + "\n"
+                + "Check-out: " + booking.getCheckOut() + "\n"
+                + "Total Price: " + (booking.getRoom().getPrice() * daysBetween) + " " + booking.getCurrency() + "\n\n"
+                + "Please check the dashboard for more details.\n\n"
+                + "Regards,\nHotel Booking System";
+
+        String htmlContent = "<html><body>"
+                + "<h2>New Booking Notification</h2>"
+                + "<p>Dear " + booking.getRoom().getHotel().getName() + " Hotel Owner,</p>"
+                + "<p>You have received a new booking:</p>"
+                + "<table>"
+                + "<tr><td><strong>Booking Reference:</strong></td><td>" + booking.getBookingReference() + "</td></tr>"
+                + "<tr><td><strong>Customer Name:</strong></td><td>" + booking.getFirstName() + "</td></tr>"
+                + "<tr><td><strong>Email:</strong></td><td>" + booking.getEmail() + "</td></tr>"
+                + "<tr><td><strong>Phone:</strong></td><td>" + booking.getPhoneNumber() + "</td></tr>"
+                + "<tr><td><strong>Room Type:</strong></td><td>" + booking.getRoom().getRoomType() + "</td></tr>"
+                + "<tr><td><strong>Check-in:</strong></td><td>" + booking.getCheckIn() + "</td></tr>"
+                + "<tr><td><strong>Check-out:</strong></td><td>" + booking.getCheckOut() + "</td></tr>"
+                + "<tr><td><strong>Total Price:</strong></td><td>" + (booking.getRoom().getPrice() * daysBetween) + " " + booking.getCurrency() + "</td></tr>"
+                + "</table>"
+                + "<p>Please log in to the dashboard for more information.</p>"
+                + "<p>Regards,<br/>Hotel Booking System</p>"
+                + "</body></html>";
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom("noreply@yourdomain.com", "Hotel Booking System");
+            helper.setTo(hotelOwnerEmail);
+            helper.setSubject(subject);
+            helper.setText(plainText, htmlContent);
+
+            // Optional headers
+            message.addHeader("X-Priority", "1");
+            message.addHeader("X-Mailer", "JavaMailer");
+
+            mailSender.send(message);
+            log.info("Booking notification email sent to hotel owner: {}", hotelOwnerEmail);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            log.error("Failed to notify hotel owner for booking: {}", booking.getBookingReference(), e);
+        }
+    }
+
 
 
 }

@@ -3,10 +3,11 @@ package com.aitIsfoul.hotel.entity.dto.request;
 import com.aitIsfoul.hotel.enums.RoomStatus;
 import com.aitIsfoul.hotel.enums.RoomType;
 import lombok.Data;
-
+import lombok.ToString;
 
 
 @Data
+@ToString
 public class UpdateRoomRequestDTO {
     private String id;
     private String title;

@@ -7,10 +7,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import lombok.ToString;
+
 @Entity
 @Data
 @AttributeOverride(name = "id", column = @Column(name = "notification_id"))
-
+@ToString
 public class Notification extends AbstractEntity {
 
     @Column(name = "reject_message")

@@ -16,11 +16,14 @@ import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @AttributeOverride(name = "id", column = @Column(name = "channel_id"))
+@ToString
 public class NotificationChannel extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)

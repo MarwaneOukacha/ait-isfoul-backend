@@ -4,10 +4,12 @@ import com.aitIsfoul.hotel.entity.dto.RoomImageDTO;
 import com.aitIsfoul.hotel.enums.RoomStatus;
 import com.aitIsfoul.hotel.enums.RoomType;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
 @Data
+@ToString
 public class RoomDetailResponseDTO {
     private String title;
     private RoomType roomType;

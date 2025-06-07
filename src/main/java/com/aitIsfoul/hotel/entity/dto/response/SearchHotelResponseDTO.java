@@ -5,11 +5,13 @@ import com.aitIsfoul.hotel.entity.dto.RoomImageDTO;
 import com.aitIsfoul.hotel.entity.model.Location;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
 @Data
 @Builder
+@ToString
 public class SearchHotelResponseDTO {
     private String name;
     private Location location;

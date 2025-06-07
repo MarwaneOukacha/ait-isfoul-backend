@@ -4,10 +4,7 @@ import com.aitIsfoul.hotel.entity.model.AbstractEntity;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -15,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AttributeOverride(name = "id", column = @Column(name = "currency_id"))
 @Entity
+@ToString
 public class Currency extends AbstractEntity {
     private String name;
     private String code;

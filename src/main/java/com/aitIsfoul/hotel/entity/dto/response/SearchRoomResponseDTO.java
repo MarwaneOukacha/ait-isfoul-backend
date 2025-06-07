@@ -4,12 +4,14 @@ import com.aitIsfoul.hotel.entity.dto.RoomImageDTO;
 import com.aitIsfoul.hotel.enums.RoomStatus;
 import com.aitIsfoul.hotel.enums.RoomType;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Data
+@ToString
 public class SearchRoomResponseDTO {
     private UUID id;
     private String title;

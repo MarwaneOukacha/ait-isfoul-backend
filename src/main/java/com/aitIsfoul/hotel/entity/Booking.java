@@ -2,10 +2,7 @@ package com.aitIsfoul.hotel.entity;
 import com.aitIsfoul.hotel.entity.model.AbstractEntity;
 import com.aitIsfoul.hotel.enums.BookingStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -15,6 +12,7 @@ import java.time.LocalDate;
 @Builder
 @AttributeOverride(name = "id", column = @Column(name = "booking_id"))
 @Data
+@ToString
 public class Booking extends AbstractEntity {
 
     @ManyToOne

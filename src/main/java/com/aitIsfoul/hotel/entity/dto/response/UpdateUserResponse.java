@@ -1,10 +1,12 @@
 package com.aitIsfoul.hotel.entity.dto.response;
 import com.aitIsfoul.hotel.enums.UserStatus;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Data
+@ToString
 public class UpdateUserResponse {
     private String firstName;
     private String lastName;

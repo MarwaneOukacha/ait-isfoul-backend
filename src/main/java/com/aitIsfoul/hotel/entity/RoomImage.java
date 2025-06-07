@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 @Entity
 @Table(name = "room_image")
+@ToString
 public class RoomImage extends AbstractEntity {
 
     private String name;

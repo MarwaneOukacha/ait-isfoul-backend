@@ -13,12 +13,14 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @AttributeOverride(name = "id", column = @Column(name = "permission_id"))
+@ToString
 public class Permission extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private PermissionType permissionName;

@@ -88,6 +88,7 @@ public class BookingServiceImp implements BookingService {
         BookingResponseDTO response = bookingMapper.toBookingResponseDTO(booking);
         response.setCheckoutUrl(paymentResponse.getPaymentUrl());
         emailService.sendPaymentPendingEmail(BookingSubject.BOOKING_PENDING.getSubject(),booking);
+        emailService.notifyHotelOwner(BookingSubject.BOOKING_RECEIPT,booking);
         log.info("Booking creation process completed for bookingRef: {}", booking.getBookingReference());
         return response;
     }

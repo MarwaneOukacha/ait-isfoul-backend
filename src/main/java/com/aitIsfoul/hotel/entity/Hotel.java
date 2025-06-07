@@ -3,10 +3,7 @@ package com.aitIsfoul.hotel.entity;
 import com.aitIsfoul.hotel.entity.model.AbstractEntity;
 import com.aitIsfoul.hotel.entity.model.Location;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -16,6 +13,7 @@ import java.util.List;
 @Builder
 @Entity
 @AttributeOverride(name = "id", column = @Column(name = "hotel_id"))
+@ToString
 public class Hotel extends AbstractEntity {
     private String name;
     @Embedded
