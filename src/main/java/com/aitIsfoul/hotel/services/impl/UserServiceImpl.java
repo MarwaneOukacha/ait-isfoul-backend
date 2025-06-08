@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,6 +41,16 @@ public class UserServiceImpl implements UserService {
         User user = userDao.updateUser(updateUserRequest);
         log.info("UserDao update user response inside UserServiceImpl: {}", user);
         return userMapper.userToUpdateUserResponse(user);
+    }
+
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return userDao.getUserByEmail(email);
+    }
+
+    @Override
+    public void save(User user) {
+        userDao.save(user);
     }
 
     @Override

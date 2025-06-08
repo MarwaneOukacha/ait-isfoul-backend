@@ -21,4 +21,5 @@ public class User extends AbstractUser  {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
 }
