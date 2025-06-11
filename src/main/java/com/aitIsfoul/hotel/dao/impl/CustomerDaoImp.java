@@ -48,7 +48,7 @@ public class CustomerDaoImp implements CustomerDao {
         customer.setPhoneNumber(addCustomerRequest.getPhoneNumber());
         customer.setEmail(addCustomerRequest.getEmail());
         customer.setIden(addCustomerRequest.getIden());
-        customer.setIsActive("Y");
+        customer.setIsActive("N");
         customer.setPassword(encoder.encode(addCustomerRequest.getPassword()));
         customer.setType(UserType.CUSTOMER);
         customer.setStatus(UserStatus.ACTIVE);

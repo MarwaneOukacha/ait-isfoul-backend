@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -65,6 +66,16 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerDao.updateCustomer(updateCustomerRequest);
         log.info("customerDao update Customer response inside CustomerServiceImpl: {}", customer);
         return customerMapper.customerToUpdateCustomerResponse(customer);
+    }
+
+    @Override
+    public Customer getCustomerByEmail(String email) {
+        return customerDao.findByEmail(email);
+    }
+
+    @Override
+    public void save(Customer customer) {
+        customerDao.save(customer);
     }
 
     private String generateOtp() {

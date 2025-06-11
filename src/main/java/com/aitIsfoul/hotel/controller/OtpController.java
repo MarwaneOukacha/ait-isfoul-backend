@@ -35,6 +35,7 @@ public class OtpController {
                     return new RuntimeException("OTP not found");
                 });
 
+
         if (otpToken.isVerified()) {
             log.info("OTP already verified for email: {}", request.getEmail());
             return ResponseEntity.badRequest().body("OTP already verified");
@@ -51,6 +52,7 @@ public class OtpController {
         }
 
         otpToken.setVerified(true);
+        otpToken.getCustomer().setIsActive("Y");
         otpTokenRepository.save(otpToken);
         log.info("OTP successfully verified for email: {}", request.getEmail());
 

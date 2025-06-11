@@ -1,9 +1,11 @@
 package com.aitIsfoul.hotel.controller;
 
+import com.aitIsfoul.hotel.entity.Customer;
 import com.aitIsfoul.hotel.entity.User;
 import com.aitIsfoul.hotel.entity.dto.AuthentificationDTO;
 import com.aitIsfoul.hotel.entity.dto.ChangePasswordDTO;
 import com.aitIsfoul.hotel.services.AuthentificationService;
+import com.aitIsfoul.hotel.services.CustomerService;
 import com.aitIsfoul.hotel.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class AuthentificationController {
 
     private final AuthentificationService service;
     private final UserService userService;
+    private final CustomerService customerService;
     private final AuthenticationManager authenticationManager;
     private Authentication authenticate;
 
@@ -60,13 +63,19 @@ public class AuthentificationController {
             );
 
             if (authenticate.isAuthenticated()) {
-                log.info("User {} authenticated successfully", a.getEmail());
+
 
                 // Reset failed attempts
                 user.setFailedLoginAttempts(0);
                 userService.save(user);
+                if(user.getIsActive().equals("Y")){
+                    log.info("User {} authenticated successfully", a.getEmail());
+                    return service.generateToken(a.getEmail());
+                }else{
+                    log.error("User {} not activated", a.getEmail());
+                    throw new RuntimeException("Account not activated");
+                }
 
-                return service.generateToken(a.getEmail());
             } else {
                 throw new RuntimeException("Incorrect password or email");
             }
@@ -91,22 +100,65 @@ public class AuthentificationController {
     @PostMapping("/customer/login")
     public Map<String, String> AuthentificationCustomer(@RequestBody AuthentificationDTO a) {
         log.info("Customer login attempt for user: {}", a.getEmail());
+        Customer customer = customerService.getCustomerByEmail(a.getEmail());
+
+        if (customer==null) {
+            log.warn("Authentication failed - customer not found: {}", a.getEmail());
+            throw new RuntimeException("Incorrect email or password");
+        }
+
+
+
+        if (customer.isAccountLocked()) {
+            if (Duration.between(customer.getLockTime(), LocalDateTime.now()).toMinutes() < 15) {
+                log.warn("Customer account is locked: {}", a.getEmail());
+                throw new RuntimeException("Account is locked. Try again later.");
+            } else {
+                // Unlock after timeout
+                customer.setAccountLocked(false);
+                customer.setFailedLoginAttempts(0);
+            }
+        }
+
         try {
             authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(a.getEmail(), a.getPassword())
             );
+
             if (authenticate.isAuthenticated()) {
-                log.info("Customer {} authenticated successfully", a.getEmail());
-                return service.generateToken(a.getEmail());
+                // Reset failed attempts
+                customer.setFailedLoginAttempts(0);
+                customerService.save(customer);
+
+                if ("Y".equalsIgnoreCase(customer.getIsActive())) {
+                    log.info("Customer {} authenticated successfully", a.getEmail());
+                    return service.generateToken(a.getEmail());
+                } else {
+                    throw new RuntimeException("Account not activated");
+                }
             } else {
-                log.warn("Customer authentication failed for user: {}", a.getEmail());
                 throw new RuntimeException("Incorrect password or email");
             }
+
+        } catch (BadCredentialsException e) {
+            int attempts = customer.getFailedLoginAttempts() + 1;
+            customer.setFailedLoginAttempts(attempts);
+            log.warn("Failed login attempt {} for customer {}", attempts, a.getEmail());
+
+            if (attempts >= 5) {
+                customer.setAccountLocked(true);
+                customer.setLockTime(LocalDateTime.now());
+                log.warn("Customer {} account locked due to too many failed attempts", a.getEmail());
+            }
+
+            customerService.save(customer);
+            throw new RuntimeException("Incorrect password or email");
         } catch (Exception e) {
-            log.error("Customer authentication error for user {}: {}", a.getEmail(), e.getMessage());
+            log.error("Customer authentication error for {}: {}", a.getEmail(), e.getMessage());
             throw e;
         }
     }
+
 
     @PostMapping("/refresh-token")
     public ResponseEntity<Map<String, String>> refreshToken(@RequestParam String refreshToken) {

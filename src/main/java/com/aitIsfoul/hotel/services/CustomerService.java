@@ -1,5 +1,6 @@
 package com.aitIsfoul.hotel.services;
 
+import com.aitIsfoul.hotel.entity.Customer;
 import com.aitIsfoul.hotel.entity.dto.GenericPage;
 import com.aitIsfoul.hotel.entity.dto.request.AddCustomerRequest;
 import com.aitIsfoul.hotel.entity.dto.request.SearchCustomerRequest;
@@ -10,6 +11,8 @@ import com.aitIsfoul.hotel.entity.dto.response.UpdateCustomerResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface CustomerService {
     GenericPage<SearchCustomerResponse> getAllCustomers(SearchCustomerRequest searchCustomerRequest, Pageable pageable);
 
@@ -17,4 +20,7 @@ public interface CustomerService {
     AddCustomerResponse addCustomer(@Valid AddCustomerRequest addCustomerRequest);
 
     UpdateCustomerResponse updateCustomer(@Valid UpdateCustomerRequest updateCustomerRequest);
+
+    Customer getCustomerByEmail(String email);
+    void save(Customer customer);
 }
