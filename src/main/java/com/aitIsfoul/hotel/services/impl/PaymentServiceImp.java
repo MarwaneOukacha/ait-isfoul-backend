@@ -40,7 +40,8 @@ public class PaymentServiceImp implements PaymentService {
             SessionCreateParams.Builder sessionBuilder = SessionCreateParams.builder()
                     .setMode(SessionCreateParams.Mode.PAYMENT)
                     .setSuccessUrl(succUrl)
-                    .setCancelUrl("http://localhost:3000/my-bookings/s")
+                    .setCancelUrl(cancelUrl)
+                    .setClientReferenceId(booking.getBookingReference())
                     .addLineItem(
                             SessionCreateParams.LineItem.builder()
                                     .setQuantity(1L) // 1 Room booking, quantity usually 1 (you can customize if you want adults+kids)
