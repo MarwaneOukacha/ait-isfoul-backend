@@ -9,6 +9,7 @@ import com.aitIsfoul.hotel.repository.UserRepository;
 import com.aitIsfoul.hotel.utils.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -48,6 +49,8 @@ public class SecurityConfig {
     private final PermissionRepository permissionRepository;
     private final UserRepository userRepository;
     private final CustomerRepository customerRepository;
+    @Value("${app.allow-origin-url}")
+    private String allowedUrl;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         return http
@@ -148,7 +151,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // apply to all endpoints
-                        .allowedOrigins("http://188.34.188.31:8080","http://localhost:3000") // your frontend URL
+                        .allowedOrigins(allowedUrl,"http://localhost:3000") // your frontend URL
                         .allowedMethods("GET", "POST", "PUT","PATCH", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

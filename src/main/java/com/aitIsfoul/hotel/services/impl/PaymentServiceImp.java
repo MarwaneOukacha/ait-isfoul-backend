@@ -10,6 +10,7 @@ import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,14 +29,17 @@ public class PaymentServiceImp implements PaymentService {
     private final StripeHttpClient stripeHttpClient;
     private final PaymentDao paymentDao;
     private final BookingDao bookingDao;
-
+    @Value("${app.succ-url}")
+    private String succUrl;
+    @Value("${app.cancel-url}")
+    private String cancelUrl;
     @Override
     public PaymentResponseDTO createPayment(Booking booking) {
         long daysBetween = ChronoUnit.DAYS.between(booking.getCheckIn(), booking.getCheckOut());
         try {
             SessionCreateParams.Builder sessionBuilder = SessionCreateParams.builder()
                     .setMode(SessionCreateParams.Mode.PAYMENT)
-                    .setSuccessUrl("http://localhost:3000/my-bookings/")
+                    .setSuccessUrl(succUrl)
                     .setCancelUrl("http://localhost:3000/my-bookings/s")
                     .addLineItem(
                             SessionCreateParams.LineItem.builder()
