@@ -23,8 +23,8 @@ public class StripeWebhookController {
 
     private final PaymentDao paymentDao;
     private final BookingDao bookingDao;
-    @Value("${stripe.secret-key}")
-    private static String endpointSecret;
+    @Value("${stripe.webhook-secret}")
+    private String endpointSecret;
 
 
     @PostMapping("/webhook")

@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors().and()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login","/verify-otp", "/refresh-token","/customers/add","/rooms/search/hotel","/rooms/room/**","/rooms/isRoomAvailable","/customers/add","/customer/login","/email/contact").permitAll()
+                        .requestMatchers("/api/stripe/webhook","/login","/verify-otp", "/refresh-token","/customers/add","/rooms/search/hotel","/rooms/room/**","/rooms/isRoomAvailable","/customers/add","/customer/login","/email/contact").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(seas -> seas.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
