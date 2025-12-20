@@ -30,7 +30,10 @@ public class EmailServiceImp implements EmailService {
     public void sendBookingConfirmation(String subject, String message, Booking booking) {
         long daysBetween = ChronoUnit.DAYS.between(booking.getCheckIn(), booking.getCheckOut());
 
-        String plainText = "Dear " + booking.getCustomer().getFirstName() + " " + booking.getCustomer().getLastName() + ",\n\n"
+        // Use booking's firstName field (customer is optional now)
+        String guestName = booking.getFirstName() != null ? booking.getFirstName() : "Guest";
+
+        String plainText = "Dear " + guestName + ",\n\n"
                 + "Thank you for choosing our services! Your booking has been confirmed.\n"
                 + "Booking Reference: " + booking.getBookingReference() + "\n"
                 + "Check-in: " + booking.getCheckIn() + "\n"
@@ -44,7 +47,7 @@ public class EmailServiceImp implements EmailService {
         String htmlContent = "<html>" +
                 "<body>" +
                 "<h2>Booking Confirmation</h2>" +
-                "<p>Dear " + booking.getCustomer().getFirstName() + " " + booking.getCustomer().getLastName() + ",</p>" +
+                "<p>Dear " + guestName + ",</p>" +
                 "<p>Thank you for choosing our services! Your booking has been successfully confirmed. Here are the details:</p>" +
 
                 "<h3>Booking Details:</h3>" +
@@ -105,7 +108,10 @@ public class EmailServiceImp implements EmailService {
     public void sendPaymentPendingEmail(String subject, Booking booking) {
         long daysBetween = ChronoUnit.DAYS.between(booking.getCheckIn(), booking.getCheckOut());
 
-        String plainText = "Dear " + booking.getCustomer().getFirstName() + " " + booking.getCustomer().getLastName() + ",\n\n"
+        // Use booking's firstName field (customer is optional now)
+        String guestName = booking.getFirstName() != null ? booking.getFirstName() : "Guest";
+
+        String plainText = "Dear " + guestName + ",\n\n"
                 + "Thank you for making a booking request. Your reservation is currently pending payment.\n"
                 + "Booking Reference: " + booking.getBookingReference() + "\n"
                 + "Check-in: " + booking.getCheckIn() + "\n"
@@ -119,7 +125,7 @@ public class EmailServiceImp implements EmailService {
         String htmlContent = "<html>" +
                 "<body>" +
                 "<h2>Payment Pending</h2>" +
-                "<p>Dear " + booking.getCustomer().getFirstName() + " " + booking.getCustomer().getLastName() + ",</p>" +
+                "<p>Dear " + guestName + ",</p>" +
                 "<p>Thank you for your booking request. Your reservation is currently <strong>pending payment</strong>.</p>" +
 
                 "<h3>Booking Details:</h3>" +

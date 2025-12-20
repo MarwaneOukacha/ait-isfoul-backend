@@ -19,7 +19,7 @@ public class Booking extends AbstractEntity {
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "customer_id", nullable = true)
     private Customer customer;
     private LocalDate checkIn;
     private LocalDate checkOut;

@@ -8,6 +8,7 @@ import com.aitIsfoul.hotel.entity.dto.response.RoomDetailResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.SearchRoomResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.UpdateRoomResponseDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public interface RoomMapper {
     AddRoomResponseDTO roomToAddRoomResponseDTO(Room room);
     UpdateRoomResponseDTO roomToUpdateRoomResponseDTO(Room room);
+    @Mapping(source = "hotel.name", target = "hotelName")
     SearchRoomResponseDTO roomToSearchRoomResponseDTO(Room room);
     List<RoomImageDTO> toRoomImageDTOList(List<RoomImage> images);
     List<RoomImage> toRoomImageList(List<RoomImageDTO> dtos);

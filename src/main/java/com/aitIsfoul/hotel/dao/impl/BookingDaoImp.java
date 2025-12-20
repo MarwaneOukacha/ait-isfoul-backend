@@ -46,7 +46,7 @@ public class BookingDaoImp implements BookingDao {
 
     @Override
     public Booking save(Booking booking) {
-        log.info("Saving booking for client: {}, reference: {}", booking.getCustomer().getEmail(), booking.getBookingReference());
+        log.info("Saving booking for client: {}, reference: {}", booking.getEmail(), booking.getBookingReference());
         Booking saved = bookingRepository.save(booking);
         log.debug("Booking saved with ID: {}", saved.getId());
         return saved;
