@@ -58,4 +58,11 @@ public class HotelServiceImp implements HotelService {
         return new GenericPage<>(searchHotelResponseDTOS);
     }
 
+    @Override
+    public SearchHotelResponseDTO getHotelByIdentifier(String identifier) {
+        log.info("HotelServiceImpl :: getHotelByIdentifier - Request received: {}", identifier);
+        Hotel hotel = hotelDao.getHotelByIdentifier(identifier);
+        return hotelMapper.searchHotelResponsedtoToHotel(hotel);
+    }
+
 }

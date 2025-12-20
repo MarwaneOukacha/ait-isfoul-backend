@@ -34,7 +34,7 @@ public class EmailController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Booking not found");
             }
 
-            log.info("Booking found. Sending confirmation email to: {}", booking.getCustomer().getEmail());
+            log.info("Booking found. Sending confirmation email to: {}", booking.getEmail());
 
             emailService.sendBookingConfirmation(
                     BookingSubject.BOOKING_CONFIRMATION.getSubject(),
@@ -42,7 +42,7 @@ public class EmailController {
                     booking
             );
 
-            log.info("Booking confirmation email sent successfully to: {}", booking.getCustomer().getEmail());
+            log.info("Booking confirmation email sent successfully to: {}", booking.getEmail());
             return ResponseEntity.ok("Booking confirmation email sent successfully");
 
         } catch (Exception e) {

@@ -25,4 +25,5 @@ public class SearchRoomResponseDTO {
     private LocalDateTime updated;
     private List<RoomImageDTO> images;
     private String size;
+    private String hotelName;
 }

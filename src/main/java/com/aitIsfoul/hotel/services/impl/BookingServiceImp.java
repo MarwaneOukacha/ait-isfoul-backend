@@ -9,6 +9,7 @@ import com.aitIsfoul.hotel.entity.Room;
 import com.aitIsfoul.hotel.entity.dto.GenericPage;
 import com.aitIsfoul.hotel.entity.dto.request.BookingRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.SearchBookingRequestDTO;
+import com.aitIsfoul.hotel.entity.dto.response.BookingDetailResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.BookingResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.PaymentResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.SearchBookingResponseDTO;
@@ -45,7 +46,7 @@ public class BookingServiceImp implements BookingService {
     @Override
     @Transactional
     public BookingResponseDTO createBooking(BookingRequestDTO bookingRequest) throws StripeException {
-        log.info("Starting booking creation process for client: {}", bookingRequest.getCustomerId());
+        log.info("Starting booking creation process for client: {}", bookingRequest.getFirstName());
 
         Room room = roomDao.findById(bookingRequest.getRoomId());
         log.debug("Room retrieved: ID = {}", room.getId());
@@ -60,8 +61,13 @@ public class BookingServiceImp implements BookingService {
             throw new IllegalStateException("Room not available");
         }
 
-        Customer customer = customerDao.findById(bookingRequest.getCustomerId());
-        log.debug("Customer retrieved: ID = {}, Email = {}", customer.getId(), customer.getEmail());
+        // Customer is optional - only fetch if customerId is provided
+        Customer customer = null;
+        if (bookingRequest.getCustomerId() != null && !bookingRequest.getCustomerId().isEmpty()) {
+            customer = customerDao.findById(bookingRequest.getCustomerId());
+            log.debug("Customer retrieved: ID = {}, Email = {}", customer.getId(), customer.getEmail());
+        }
+        
         long daysBetween = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
         Booking booking = new Booking();
         booking.setRoom(room);
@@ -82,13 +88,17 @@ public class BookingServiceImp implements BookingService {
         booking = bookingDao.save(booking);
         log.info("Booking saved: Reference = {}", booking.getBookingReference());
 
-        PaymentResponseDTO paymentResponse = paymentService.createPayment(booking);
-        log.info("Payment initiated for bookingRef = {}, paymentUrl = {}", booking.getBookingReference(), paymentResponse.getPaymentUrl());
+        // Skip payment integration for now
+        // PaymentResponseDTO paymentResponse = paymentService.createPayment(booking);
+        // log.info("Payment initiated for bookingRef = {}, paymentUrl = {}", booking.getBookingReference(), paymentResponse.getPaymentUrl());
 
         BookingResponseDTO response = bookingMapper.toBookingResponseDTO(booking);
-        response.setCheckoutUrl(paymentResponse.getPaymentUrl());
-        emailService.sendPaymentPendingEmail(BookingSubject.BOOKING_PENDING.getSubject(),booking);
-        emailService.notifyHotelOwner(BookingSubject.BOOKING_RECEIPT,booking);
+        // response.setCheckoutUrl(paymentResponse.getPaymentUrl());
+        
+        // Skip email sending for now (email credentials not configured)
+        // emailService.sendPaymentPendingEmail(BookingSubject.BOOKING_PENDING.getSubject(),booking);
+        // emailService.notifyHotelOwner(BookingSubject.BOOKING_RECEIPT,booking);
+        
         log.info("Booking creation process completed for bookingRef: {}", booking.getBookingReference());
         return response;
     }
@@ -109,6 +119,13 @@ public class BookingServiceImp implements BookingService {
     public Booking getBookingByRef(String bookingRef) {
         log.info("Fetching booking by reference: {}", bookingRef);
         return bookingDao.findByBookingReference(bookingRef);
+    }
+
+    @Override
+    public BookingDetailResponseDTO getBookingDetailByRef(String bookingRef) {
+        log.info("Fetching booking detail by reference: {}", bookingRef);
+        Booking booking = bookingDao.findByBookingReference(bookingRef);
+        return bookingMapper.toBookingDetailResponseDTO(booking);
     }
 
 
