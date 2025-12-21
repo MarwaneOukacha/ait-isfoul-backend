@@ -44,7 +44,7 @@ public interface RoomRepository extends JpaRepository<Room, UUID> , JpaSpecifica
             if (criteria.getMaxPeople()!=null && criteria.getMaxPeople() > 0) {
                 predicates.add(cb.greaterThanOrEqualTo(root.get("maxPeople"), criteria.getMaxPeople()));
             }
-
+            predicates.add(cb.equal(root.get("isActive"), "Y"));
             query.where(cb.and(predicates.toArray(new Predicate[0])));
             query.orderBy(cb.desc(root.get("created"))); // Assuming AbstractEntity has 'created' timestamp
 

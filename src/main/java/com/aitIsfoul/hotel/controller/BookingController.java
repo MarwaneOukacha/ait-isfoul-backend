@@ -4,6 +4,7 @@ import com.aitIsfoul.hotel.entity.Booking;
 import com.aitIsfoul.hotel.entity.dto.GenericPage;
 import com.aitIsfoul.hotel.entity.dto.request.BookingRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.SearchBookingRequestDTO;
+import com.aitIsfoul.hotel.entity.dto.response.BookingDetailResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.BookingResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.SearchBookingResponseDTO;
 import com.aitIsfoul.hotel.enums.BookingStatus;
@@ -54,6 +55,11 @@ public class BookingController {
     public BookingResponseDTO getBooking(@RequestParam String ref){
         return bookingService.getBookingResponseDtoByRef(ref);
     }
+    @GetMapping("/booking/{ref}")
+    public BookingDetailResponseDTO getBookingDetail(@PathVariable String ref){
+        return bookingService.getBookingDetailByRef(ref);
+    }
+
     @GetMapping("/myBookings")
     public ResponseEntity<GenericPage<SearchBookingResponseDTO>> searchMyBookings(@RequestParam(required = false) String keyword,
                                                                                   @RequestParam(required = false) BookingStatus status,

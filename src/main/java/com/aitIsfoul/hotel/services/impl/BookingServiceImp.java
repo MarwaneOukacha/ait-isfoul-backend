@@ -9,6 +9,7 @@ import com.aitIsfoul.hotel.entity.Room;
 import com.aitIsfoul.hotel.entity.dto.GenericPage;
 import com.aitIsfoul.hotel.entity.dto.request.BookingRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.SearchBookingRequestDTO;
+import com.aitIsfoul.hotel.entity.dto.response.BookingDetailResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.BookingResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.PaymentResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.SearchBookingResponseDTO;
@@ -109,6 +110,13 @@ public class BookingServiceImp implements BookingService {
     public Booking getBookingByRef(String bookingRef) {
         log.info("Fetching booking by reference: {}", bookingRef);
         return bookingDao.findByBookingReference(bookingRef);
+    }
+
+    @Override
+    public BookingDetailResponseDTO getBookingDetailByRef(String bookingRef) {
+        log.info("Fetching booking detail by reference: {}", bookingRef);
+        Booking booking = bookingDao.findByBookingReference(bookingRef);
+        return bookingMapper.toBookingDetailResponseDTO(booking);
     }
 
 

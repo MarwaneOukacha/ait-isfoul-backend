@@ -4,6 +4,7 @@ import com.aitIsfoul.hotel.entity.Booking;
 import com.aitIsfoul.hotel.entity.dto.GenericPage;
 import com.aitIsfoul.hotel.entity.dto.request.BookingRequestDTO;
 import com.aitIsfoul.hotel.entity.dto.request.SearchBookingRequestDTO;
+import com.aitIsfoul.hotel.entity.dto.response.BookingDetailResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.BookingResponseDTO;
 import com.aitIsfoul.hotel.entity.dto.response.SearchBookingResponseDTO;
 import com.stripe.exception.StripeException;
@@ -17,6 +18,6 @@ public interface BookingService {
 
     BookingResponseDTO getBookingResponseDtoByRef(String bookingRef);
     Booking getBookingByRef(String bookingRef);
-
+    BookingDetailResponseDTO getBookingDetailByRef(String bookingRef);
     GenericPage<SearchBookingResponseDTO> searchBookings(SearchBookingRequestDTO searchBookingRequestDTO,Pageable pageable);
 }

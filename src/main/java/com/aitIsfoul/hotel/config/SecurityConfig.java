@@ -53,11 +53,28 @@ public class SecurityConfig {
     private String allowedUrl;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
+
+        //TODO:: you should remove some ulrs when u do login in backoffice
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors().and()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/stripe/webhook","/login","/verify-otp", "/refresh-token","/customers/add","/rooms/search/hotel","/rooms/room/**","/rooms/isRoomAvailable","/customers/add","/customer/login","/email/contact").permitAll()
+                        .requestMatchers(
+                                "/api/stripe/webhook",
+                                "/login",
+                                "/verify-otp",
+                                "/refresh-token",
+                                "/customers/add",
+                                "/customers/search",
+                                "/rooms/**",
+                                "/customer/login",
+                                "/email/contact",
+                                "/bookings/**",
+                                "/hotels/**",
+                                "/rooms/**",
+                                "/users/**"
+                        ).permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(seas -> seas.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

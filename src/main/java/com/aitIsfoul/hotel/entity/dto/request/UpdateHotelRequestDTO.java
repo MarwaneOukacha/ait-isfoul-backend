@@ -18,5 +18,5 @@ public class UpdateHotelRequestDTO {
     private LocationDTO location;
     @Max(5)
     private int stars;
-
+    private String isActive;
 }

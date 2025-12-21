@@ -50,5 +50,10 @@ public class HotelController {
         return ResponseEntity.ok(hotelService.updateHotel(updateHotelRequestDTO));
     }
 
+    @GetMapping("/hotel/{identifier}")
+    public ResponseEntity<SearchHotelResponseDTO> getHotelByIdentifier(@PathVariable String identifier){
+        log.info("HotelController :: getHotelByIdentifier {}", identifier);
+        return ResponseEntity.ok(hotelService.getHotelByIdentifier(identifier));
+    }
 
 }

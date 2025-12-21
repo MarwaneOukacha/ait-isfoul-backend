@@ -14,4 +14,5 @@ public interface HotelService {
     AddHotelResponseDTO addHotel(AddHotelRequestDTO addHotelRequestDTO);
     UpdateHotelResponseDTO updateHotel(UpdateHotelRequestDTO updateHotelRequestDTO);
     GenericPage<SearchHotelResponseDTO> getAllHotels(SearchHotelCriteriaDTO searchHotelCriteriaDTO, Pageable pageable);
+    SearchHotelResponseDTO getHotelByIdentifier(String identifier);
 }

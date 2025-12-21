@@ -36,7 +36,7 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>, JpaSpecific
             if (criteria.getOwnerIden() != null) {
                 predicates.add(cb.equal(root.get("owner").get("iden"), criteria.getOwnerIden()));
             }
-
+            predicates.add(cb.equal(root.get("isActive"), "Y"));
             query.where(cb.and(predicates.toArray(new Predicate[0])));
             query.orderBy(cb.desc(root.get("created"))); // Assuming 'created' field exists in AbstractEntity
 

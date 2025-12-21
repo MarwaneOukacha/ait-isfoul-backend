@@ -74,6 +74,9 @@ public class HotelDaoImp implements HotelDao {
             Location updatedLocation = hotelMapper.toLocation(updateHotelRequestDTO.getLocation());
             hotel.setLocation(updatedLocation);
         }
+        if(!updateHotelRequestDTO.getIsActive().isEmpty()){
+            hotel.setIsActive(updateHotelRequestDTO.getIsActive());
+        }
 
         Hotel updated = hotelRepository.save(hotel);
         log.info("Hotel updated successfully: {}", updated);
